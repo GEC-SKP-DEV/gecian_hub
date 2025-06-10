@@ -172,11 +172,11 @@ export default function ExpensePage() {
     return acc;
   }, {});
 
-
   // Filter expenses by selected date for the expense list
   const filteredExpenses = selectedDate
     ? expenses.filter((e) => e.date === selectedDate)
     : expenses;
+  const totalAmount = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
 
   return (
     <div className="relative min-h-screen bg-white pb-20 px-4 pt-4 text-black ">
@@ -237,7 +237,10 @@ export default function ExpensePage() {
 
           {/* Date Selector */}
           <DateSelector onDateChange={setSelectedDate} selectedDate={selectedDate} />
-
+          <div className="flex justify-between items-center my-4">
+            <h2 className="text-xl font-semibold">Expenses</h2>
+            <span className="font-semibold">Total : ₹{totalAmount}</span>
+          </div>
           {/* List of Expenses for the selected date */}
           <div className="flex flex-col gap-4 mb-8">
             {filteredExpenses.length === 0 ? (

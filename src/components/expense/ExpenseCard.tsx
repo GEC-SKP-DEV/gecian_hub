@@ -9,7 +9,7 @@ type ExpenseItem = {
 
 export default function ExpenseCard({ title, amount, category, description }:ExpenseItem) {
   return (
-    <div className="border rounded-xl p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 max-w-full w-full">
+    <div className="border border-black rounded-xl p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 max-w-full w-full">
       <div className="flex justify-between font-bold text-base sm:text-lg md:text-xl">
         <span className="truncate max-w-[70%]">{title}</span>
         <span>₹{amount}</span>
