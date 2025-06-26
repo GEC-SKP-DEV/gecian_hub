@@ -49,7 +49,7 @@ const clubData: Club[] = [
         linkedin: "https://linkedin.com/company/mulearn",
         whatsapp: "https://wa.me/919876543210"
     },
-    enrolled: true // Example: Ujuhun is enrolled
+    enrolled: true
     }
 ];
 
