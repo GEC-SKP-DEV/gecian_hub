@@ -1,8 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TimeTableSlider } from "./TimeTableSlider";
 import Papa from "papaparse";
 import { DocumentUpload, NoteRemove } from "iconsax-react";
+
+function dataURLtoFile(dataurl: string, filename: string): File {
+  const arr = dataurl.split(",");
+  const mime = arr[0]?.match(/:(.*?);/)?.[1] || "";
+  const bstr = atob(arr[1]!);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) u8arr[n] = bstr.charCodeAt(n);
+  return new File([u8arr], filename, { type: mime });
+}
 
 const TimeTableBlock = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -15,23 +25,58 @@ const TimeTableBlock = () => {
   const nextDay = () => setCurrentDay((prev) => (prev === 4 ? 0 : prev + 1));
   const prevDay = () => setCurrentDay((prev) => (prev === 0 ? 4 : prev - 1));
 
+  useEffect(() => {
+    const type = localStorage.getItem("timetableType");
+
+    if (type === "csv") {
+      const csv = localStorage.getItem("timetableCSV");
+      if (csv) {
+        setCsvData(JSON.parse(csv));
+      }
+    }
+
+    if (type === "image") {
+      const imageData = localStorage.getItem("timetableImage");
+      if (imageData) {
+        const file = dataURLtoFile(imageData, "saved-image.png");
+        setUploadedFile(file);
+      }
+    }
+  }, []);
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploadedFile(file);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      if (file.type === "text/csv" || file.name.endsWith(".csv")) {
+        Papa.parse(file, {
+          complete: (result) => {
+            setUploadedFile(file);
+            setCsvData(result.data as string[][]);
 
-    if (file.type === "text/csv" || file.name.endsWith(".csv")) {
-      Papa.parse(file, {
-        complete: (result) => {
-          setCsvData(result.data as string[][]);
-        },
-        error: (error) => {
-          console.error("Error parsing CSV:", error);
-        },
-      });
-    } else {
-      setCsvData(null); // reset if not CSV
+            localStorage.setItem("timetableType", "csv");
+            localStorage.setItem("timetableCSV", JSON.stringify(result.data));
+          },
+          error: (error) => {
+            console.error("Error parsing CSV:", error);
+          },
+        });
+      } else if (file.type.startsWith("image/")) {
+        setUploadedFile(file);
+        setCsvData(null);
+
+        localStorage.setItem("timetableType", "image");
+        localStorage.setItem("timetableImage", base64);
+      }
+    };
+
+    if (file.type.startsWith("image/")) {
+      reader.readAsDataURL(file);
+    } else if (file.type === "text/csv") {
+      reader.readAsText(file);
     }
   };
 
@@ -76,6 +121,9 @@ const TimeTableBlock = () => {
                 onClick={() => {
                   setUploadedFile(null);
                   setCsvData(null);
+                  localStorage.removeItem("timetableCSV");
+                  localStorage.removeItem("timetableImage");
+                  localStorage.removeItem("timetableType");
                 }}
                 className="flex items-center border border-[var(--text)] space-x-1 px-2 py-1 text-[var(--text)] rounded-lg text-sm"
               >
