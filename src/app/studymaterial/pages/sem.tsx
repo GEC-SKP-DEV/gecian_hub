@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SemPage: React.FC = () => {
-  const subjects = [
+  const semesters = [
     'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'
   ];
 
@@ -31,12 +31,12 @@ const SemPage: React.FC = () => {
 
         {/* Subject Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 md:gap-y-20 gap-4 px-10">
-          {subjects.map((subject, index) => (
+          {semesters.map((sem, index) => (
             <button
               key={index}
               className="bg-white border border-black rounded-lg py-7 text-center shadow-md"
             >
-              <span className="text-2xl font-bold text-black">{subject}</span>
+              <span className="text-2xl font-bold text-black">{sem}</span>
             </button>
           ))}
         </div>
