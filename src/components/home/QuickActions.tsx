@@ -50,7 +50,7 @@ export const QuickActions = () => {
     },
     {
       text: "Club",
-      onClick: () => alert("Club details coming soon!"),
+      onClick: () => (window.location.href = "/club"),
     },
     {
       text: "Anonymous Complaint",
