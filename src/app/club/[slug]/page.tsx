@@ -1,7 +1,6 @@
 // app/club/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 
-
 import clubData from 'src/components/club/ClubData';
 import ClubDetail from '@/components/club/ClubDetail';
 
