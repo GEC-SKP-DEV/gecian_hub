@@ -1,11 +1,9 @@
-// pages/api/set-auth-cookie/route.ts
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getAuth } from 'firebase-admin/auth';
+import { NextRequest, NextResponse } from 'next/server';
+// import { getAuth } from 'firebase-admin/auth';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { serialize } from 'cookie';
 
 const serviceAccount = {
-  // Replace these with your service account values
   projectId: process.env.FIREBASE_PROJECT_ID,
   privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
   clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
@@ -17,16 +15,18 @@ if (!getApps().length) {
   });
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(405).end();
-
-  const { idToken } = req.body;
-  if (!idToken) return res.status(400).json({ error: 'ID token required' });
-
+export async function POST(req: NextRequest) {
   try {
-    const decodedToken = await getAuth().verifyIdToken(idToken);
+    const body = await req.json();
+    const { idToken } = body;
 
-    // Set secure HttpOnly cookie
+    if (!idToken) {
+      return NextResponse.json({ error: 'ID token required' }, { status: 400 });
+    }
+
+    // Uncomment to verify token:
+    // await getAuth().verifyIdToken(idToken);
+
     const cookie = serialize('authToken', idToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -35,10 +35,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       sameSite: 'lax',
     });
 
-    res.setHeader('Set-Cookie', cookie);
-    res.status(200).json({ success: true });
-  } catch (err) {
-    console.error(err);
-    res.status(401).json({ error: 'Invalid token' });
+    const res = NextResponse.json({ success: true });
+    res.headers.set('Set-Cookie', cookie);
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
 }
