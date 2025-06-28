@@ -12,10 +12,10 @@ export function middleware(request: NextRequest) {
     publicRoutes.some((route) => pathname.startsWith(route + '/'));
 
   // If no token and trying to access protected route
-  if (!token && !isPublicRoute) {
-    console.log(`Redirecting ${pathname} to /auth - no token`);
-    return NextResponse.redirect(new URL('/auth', request.url));
-  }
+  // if (!token && !isPublicRoute) {
+  //   console.log(`Redirecting ${pathname} to /auth - no token`);
+  //   return NextResponse.redirect(new URL('/auth', request.url));
+  // }
 
   return NextResponse.next();
 }
