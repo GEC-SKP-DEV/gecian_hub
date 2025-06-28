@@ -20,7 +20,7 @@ const Header: React.FC<{
       ? `S${semester}, `
       : "";
      const handleUsrProfileClick = () => {
-    router.push("/login");
+    router.push("/profile");
   };
 
   return (
