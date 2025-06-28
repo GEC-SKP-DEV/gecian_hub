@@ -2,6 +2,7 @@
 
 import { User } from "iconsax-react";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 function isValidSemester(semester: number) {
   return semester >= 1 && semester <= 8 && Number.isInteger(semester);
@@ -11,11 +12,16 @@ const Header: React.FC<{
   userName?: string | null;
   semester?: number | null;
   department?: string | null;
-}> = ({ userName, semester, department }) => {
+  userPhotoURL?: string | null;
+}> = ({ userName, semester, department, userPhotoURL }) => {
+  const router = useRouter();
   const displaySemester =
     semester !== undefined && semester !== null && isValidSemester(semester)
       ? `S${semester}, `
       : "";
+     const handleUsrProfileClick = () => {
+    router.push("/profile");
+  };
 
   return (
     <div className="flex items-center justify-between px-4 py-7 bg-gradient-to-b from-transparent to-20% to-[var(--main)] shadow-[0_8px_20px_10px_var(--main)]">
@@ -31,15 +37,24 @@ const Header: React.FC<{
           </p>
         </div>
 
-        {/* User Icon */}
+        {/* User Image or Icon */}
         <button
           type="button"
-          className="flex size-10 items-center justify-center rounded-full bg-gray-600 transition-colors hover:bg-purple-300 dark:bg-purple-800 dark:hover:bg-purple-700"
+          className="flex size-10 items-center justify-center rounded-full overflow-hidden bg-gray-600 transition-colors hover:bg-purple-300 dark:bg-purple-800 dark:hover:bg-purple-700"
           title="User Profile"
-          onClick={() => console.warn("Profile Clicked")} // Changed to warn
           aria-label="Open user profile"
+          onClick={() => handleUsrProfileClick()}
         >
-          <User size="28" color="white" variant="Linear" />
+          {userPhotoURL ? (
+            <img
+              src={userPhotoURL}
+              alt="User Profile"
+              className="object-cover w-full h-full"
+            />
+          ) : (
+            <User size="28" color="white" variant="Linear" />
+          )}
+          
         </button>
       </div>
     </div>
