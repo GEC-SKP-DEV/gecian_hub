@@ -9,7 +9,7 @@ type BusData = {
   name: string; // Display name for the bus
 };
 
-export const BusButtons = ({ buses }: { buses: BusData[] }) => {
+export const BusButtons = ({ buses }: { buses: BusData[] },) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-black">
       <div className="w-full max-w-sm space-y-4">
