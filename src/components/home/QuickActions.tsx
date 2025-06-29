@@ -19,7 +19,7 @@ export const QuickActions = () => {
     },
     {
       text: "Lost & Found",
-      onClick: () => (window.location.href = "/lost-and-found"),
+      onClick: () => (window.location.href = "/lost"),
     },
     {
       text: "SGPA Calculator",
@@ -30,7 +30,7 @@ export const QuickActions = () => {
       text: "Hackathon",
       onClick: () =>
         window.open(
-          "https://codecompasss.github.io/code_compass_india/repeto",
+          "https://devpost.com/hackathons",
           "_blank",
           "noopener,noreferrer",
         ),
@@ -45,8 +45,8 @@ export const QuickActions = () => {
         ),
     },
     {
-      text: "Academic Calendar",
-      onClick: () => alert("Academic Calendar feature coming soon!"),
+      text: "Project Collobaration",
+      onClick: () => alert("Project Collobaration feature coming soon!"),
     },
     {
       text: "Club",
@@ -61,10 +61,10 @@ export const QuickActions = () => {
       onClick: () => alert("Private Hostel information coming soon!"),
     },
     {
-      text: "Scholarships",
+      text: "Repeto",
       onClick: () =>
         window.open(
-          "https://codecompasss.github.io/code_compass_india/repeto",
+          "https://codecompasss.github.io/repeto/",
           "_blank",
           "noopener,noreferrer",
         ),
@@ -73,7 +73,7 @@ export const QuickActions = () => {
       text: "Project Showcase",
       onClick: () =>
         window.open(
-          "https://codecompasss.github.io/gecian_archive/",
+          "https://codecompasss.github.io/project_archive/",
           "_blank",
           "noopener,noreferrer",
         ),
