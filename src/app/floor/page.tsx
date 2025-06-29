@@ -1,12 +1,9 @@
-//import { BusButtons } from "@/components/Bus/busButton";
-
-const busData = [
-  { slug: 'bus-1', name: 'Bus 1' },
-  { slug: 'bus-2', name: 'Bus 2' },
-  { slug: 'bus-3', name: 'Bus 3' },
-  { slug: 'bus-4', name: 'Bus 4' },
-  { slug: 'bus-5', name: 'Bus 5' },
-  { slug: 'bus-6', name: 'Bus 6' },
+const floors = [
+  { slug: 'Floor-1', name: 'Floor 1' },
+  { slug: 'Ground Floor', name: 'Ground Floor' },
+  { slug: 'Floor-2', name: 'Floor 2' },
+  { slug: 'Floor-3', name: 'Floor-3' },
+  { slug: 'Floor-4', name: 'Floor 4' },
 ];
 
 const BusPage: React.FC = () => {
@@ -16,7 +13,7 @@ const BusPage: React.FC = () => {
       <div className="px-6 py-8">
         <div className="text-center mb-8">
           <div className="relative">
-            <h1 className="text-[30px] font-bold text-black">College Bus</h1>
+            <h1 className="text-[30px] font-bold text-black">College Floor</h1>
             {/* Decorative wave underline */}
             <svg 
               className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-3" 
@@ -35,13 +32,13 @@ const BusPage: React.FC = () => {
 
         {/* Subject Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 md:gap-y-20 gap-4 px-10">
-          {busData.map((bus, index) => (
+          {floors.map((floor, index) => (
             // Use BusButtons
             <button
               key={index}
               className="bg-white border border-black rounded-lg py-7 text-center shadow-md"
             >
-              <span className="text-2xl font-bold text-black">{bus.name}</span>
+              <span className="text-2xl font-bold text-black">{floor.name}</span>
             </button>
           ))}
         </div>
