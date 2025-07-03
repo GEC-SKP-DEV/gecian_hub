@@ -15,11 +15,11 @@ export const QuickActions = () => {
     },
     {
       text: "Bus Time",
-      onClick: () => alert("Bus Time feature coming soon!"),
+      onClick: () => (window.location.href = "/bus"),
     },
     {
       text: "Lost & Found",
-      onClick: () => (window.location.href = "/lost-and-found"),
+      onClick: () => (window.location.href = "/lost"),
     },
     {
       text: "SGPA Calculator",
@@ -30,27 +30,23 @@ export const QuickActions = () => {
       text: "Hackathon",
       onClick: () =>
         window.open(
-          "https://codecompasss.github.io/code_compass_india/repeto",
+          "https://devpost.com/hackathons",
           "_blank",
           "noopener,noreferrer",
         ),
     },
     {
       text: "College Map",
-      onClick: () =>
-        window.open(
-          "https://app.mappedin.com/map/65fbc2aa7c0c4fe5b4cc4683/directions?floor=m_c235d70c9e691132&location=s_fca685ba2c784ab7&departure=s_c0ed60b6daeada7c",
-          "_blank",
-          "noopener,noreferrer",
-        ),
+      onClick: () => (window.location.href = "/floor"),
+
     },
     {
-      text: "Academic Calendar",
-      onClick: () => alert("Academic Calendar feature coming soon!"),
+      text: "Project Collobaration",
+      onClick: () => alert("Project Collobaration feature coming soon!"),
     },
     {
       text: "Club",
-      onClick: () => alert("Club details coming soon!"),
+      onClick: () => (window.location.href = "/club"),
     },
     {
       text: "Anonymous Complaint",
@@ -61,10 +57,10 @@ export const QuickActions = () => {
       onClick: () => alert("Private Hostel information coming soon!"),
     },
     {
-      text: "Scholarships",
+      text: "Repeto",
       onClick: () =>
         window.open(
-          "https://codecompasss.github.io/code_compass_india/repeto",
+          "https://codecompasss.github.io/repeto/",
           "_blank",
           "noopener,noreferrer",
         ),
@@ -73,7 +69,7 @@ export const QuickActions = () => {
       text: "Project Showcase",
       onClick: () =>
         window.open(
-          "https://codecompasss.github.io/gecian_archive/",
+          "https://codecompasss.github.io/project_archive/",
           "_blank",
           "noopener,noreferrer",
         ),
