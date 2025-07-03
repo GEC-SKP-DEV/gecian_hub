@@ -50,7 +50,7 @@ export const QuickActions = () => {
     },
     {
       text: "Anonymous Complaint",
-      onClick: () => alert("Anonymous Complaint feature coming soon!"),
+      onClick: () => (window.location.href = "/complaint"),
     },
     {
       text: "Private Hostel",
