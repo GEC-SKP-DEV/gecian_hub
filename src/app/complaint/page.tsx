@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ComplaintCard from '@/components/complaint/Complaintcard';
 import Tabs from '@/components/complaint/Tabs';
 import Link from 'next/link';
@@ -20,7 +20,7 @@ type Complaint = {
 export default function ComplaintPage() {
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState<'solved' | 'unsolved'>('unsolved');
-  const [complaints, setComplaints] = useState<Complaint[]>([]);
+  const [complaints] = useState<Complaint[]>([]);
 
   /*useEffect(() => {
     async function fetchComplaints() {
