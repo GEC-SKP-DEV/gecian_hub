@@ -1,41 +1,35 @@
-import { Calendar, ClipboardList, HelpCircle, Home, User } from 'lucide-react';
-
+import { Book, Calendar2, Home2, Money } from "iconsax-react";
+import Link from "next/link";
 const BottomNavBar = () => {
   return (
-    <nav className="fixed inset-x-0 bottom-0 border-t border-gray-300 bg-background text-foreground shadow-md dark:border-gray-700">
+    <nav className="fixed left-6 right-6 bottom-8 border-t border-gray-300 bg-[var(--main)] max-w-[var(--max-screen-size)] mx-auto text-foreground rounded-2xl">
       <ul className="flex items-center justify-around py-2">
         {/* Home */}
         <li className="flex flex-col items-center">
           <button type="button" className="focus:outline-none">
-            <Home className="size-6" />
+            <Home2 size="32" color="var(--text)" />
+          </button>
+        </li>
+
+        {/* Book */}
+        <li className="flex flex-col items-center">
+          <button type="button" className="focus:outline-none">
+            <Link href="/studymaterial">
+            <Book size="32" color="var(--text)" />
+            </Link>
           </button>
         </li>
 
         {/* Calendar */}
         <li className="flex flex-col items-center">
           <button type="button" className="focus:outline-none">
-            <Calendar className="size-6" />
+            <Calendar2 size="32" color="var(--text)" />
           </button>
         </li>
 
-        {/* User */}
         <li className="flex flex-col items-center">
           <button type="button" className="focus:outline-none">
-            <User className="size-6" />
-          </button>
-        </li>
-
-        {/* Help Circle */}
-        <li className="flex flex-col items-center">
-          <button type="button" className="focus:outline-none">
-            <HelpCircle className="size-6" />
-          </button>
-        </li>
-
-        {/* Clipboard List */}
-        <li className="flex flex-col items-center">
-          <button type="button" className="focus:outline-none">
-            <ClipboardList className="size-6" />
+            <Money size="32" color="var(--text)" />
           </button>
         </li>
       </ul>

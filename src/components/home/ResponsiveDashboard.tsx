@@ -1,47 +1,42 @@
-'use client';
-
-import React, { useState } from 'react';
-import { QuickActions } from './QuickActions';
-// import Header from '@/components/topNavbar';
-// import BottomNavBar from '@/components/bottemNavbar';
-import { TimeTableSlider } from './TimeTableSlider';
+"use client";
+import { useEffect, useState } from "react";
+import TopNavBar from "../topNavbar";
+import { QuickActions } from "./QuickActions";
+import { TimeTableBlock } from "./TimeTable";
+import { onAuthStateChanged } from "@/lib/firebase/auth"; // Update with correct path
+import { User } from "firebase/auth";
 
 const ResponsiveDashboard = () => {
-  const [currentDay, setCurrentDay] = useState(0);
+ const [userName, setUserName] = useState<string>("");
+const [userPhotoURL, setUserPhotoURL] = useState<string | null>(null);
 
-  const nextDay = () => {
-    setCurrentDay(prev => (prev === 4 ? 0 : prev + 1));
-  };
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged((authUser: User | null) => {
+    if (authUser) {
+      setUserName(authUser.displayName || "Student");
+      setUserPhotoURL(authUser.photoURL || null);
+    } else {
+      setUserName("Guest");
+      setUserPhotoURL(null);
+    }
+  });
 
-  const prevDay = () => {
-    setCurrentDay(prev => (prev === 0 ? 4 : prev - 1));
-  };
+  return () => unsubscribe();
+}, []);
+
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="mx-auto max-w-7xl">
-        {/* < Header /> */}
-
+    <div className="min-h-screen">
+      <TopNavBar userName={userName} userPhotoURL={userPhotoURL}  />
+      <div className="mx-auto max-w-[var(--max-screen-size)] pt-4">
         <main className="px-3 pb-24">
-          <div className="md:flex md:h-[calc(100vh-12rem)] md:gap-6 lg:gap-8">
-            <section className="h-[50vh] w-full md:h-full md:w-1/2">
-              <h2 className="mb-3 text-lg font-semibold text-white">
-                Time Table
-              </h2>
-              <div className="h-[calc(100%-2rem)] rounded-xl bg-gray-800 p-4">
-                <TimeTableSlider
-                  currentDay={currentDay}
-                  onPrevDay={prevDay}
-                  onNextDay={nextDay}
-                />
-              </div>
+          <div className="md:flex lg:h-[calc(100vh-12rem)] md:gap-6 lg:gap-8">
+            <section className="flex flex-col justify-center h-[64vh] w-full md:h-full md:w-1/2 mx-auto">
+              <TimeTableBlock />
             </section>
-
             <QuickActions />
           </div>
         </main>
-
-        {/* < BottomNavBar /> */}
       </div>
     </div>
   );
