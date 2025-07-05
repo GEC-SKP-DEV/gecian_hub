@@ -2,6 +2,8 @@ import BottomNavBar from "../components/bottomNavbar";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { Toaster } from "react-hot-toast";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,7 +27,15 @@ export default function RootLayout({
       >
       
         {children}
-
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            className: "bg-gray-800 text-white",
+            style: {
+              fontFamily: "var(--font-geist-sans)",
+              fontSize: "14px",
+            },
+          }}></Toaster>
         <BottomNavBar />
       </body>
     </html>
