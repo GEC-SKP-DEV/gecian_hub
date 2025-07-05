@@ -1,39 +1,43 @@
+"use client";
 import { Book, Calendar2, Home2, Money } from "iconsax-react";
 import Link from "next/link";
+import { useState } from "react";
+
 const BottomNavBar = () => {
+
+  const [activeTab, setActiveTab] = useState("home");  
+  
+  const tabs = [
+    { name: "home", icon: Home2,href: "/", label: "Home" },
+    { name: "studymaterial", icon: Book, href: "/studymaterial", label: "Study" },
+    { name: "attendance", icon: Calendar2 , href: "/attendance", label: "Attendance" },
+    { name: "finance", icon:Money, href: "/finance", label: "Finance" },]
+ 
+
   return (
     <nav className="fixed left-6 right-6 bottom-8 border-t border-gray-300 bg-[var(--main)] max-w-[var(--max-screen-size)] mx-auto text-foreground rounded-2xl">
       <ul className="flex items-center justify-around py-2">
         {/* Home */}
-        <li className="flex flex-col items-center">
-          <button type="button" className="focus:outline-none">
-            <Home2 size="32" color="var(--text)" />
-          </button>
-        </li>
+        {tabs.map(({ name, icon:Icon, href, label }) => (
+          <li key={name} className="flex flex-col items-center">
 
-        {/* Book */}
-        <li className="flex flex-col items-center">
-          <button type="button" className="focus:outline-none">
-            <Link href="/studymaterial">
-            <Book size="32" color="var(--text)" />
-            </Link>
-          </button>
-        </li>
+            <button type="button" className="focus:outline-none" onClick={() => setActiveTab(name)}>
+              <Link href={href} >
+                <div className={` ${activeTab === name ? "bg-black w-full flex text-blue-400 text-center items-center gap-2 p-[4px]  px-2 font-bold rounded-xl transition-all duration-300" :
+                   "overflow-hidden transition-all duration-300"
+                   }`}>
 
-        {/* Calendar */}
-        <li className="flex flex-col items-center">
-          <button type="button" className="focus:outline-none">
-            <Calendar2 size="32" color="var(--text)" />
-          </button>
-        </li>
-
-        <li className="flex flex-col items-center">
-          <button type="button" className="focus:outline-none">
-            <Money size="32" color="var(--text)" />
-          </button>
-        </li>
+                  <Icon color={`${activeTab === name ? "var(--main)" : "var(--text)"}`} size="32"/>
+                  {activeTab === name ? label : ""}
+                </div>
+              </Link>
+            </button>
+          </li>
+        ))}
       </ul>
     </nav>
+
+      
   );
 };
 
