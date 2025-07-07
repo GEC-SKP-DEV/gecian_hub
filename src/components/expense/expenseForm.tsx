@@ -16,7 +16,7 @@ export default function ExpenseForm({ onClose, onChange, onSubmit, formData }: E
   return (
     <div className="antialiased flex flex-col items-center">
       <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-3xl relative mx-auto">
-        <h2 className="text-xl font-bold text-left mb-6 text-gray-800">Add Your Expenses</h2>
+        <h2 className="text-xl font-bold text-left mb-6 text-black">Add Your Expenses</h2>
         <form onSubmit={onSubmit} className="space-y-4">
           
           {/* Title */}
@@ -28,7 +28,7 @@ export default function ExpenseForm({ onClose, onChange, onSubmit, formData }: E
               placeholder="Title"
               value={formData.title}
               onChange={onChange}
-              className="w-full px-4 py-2 border border-black rounded-lg"
+              className="w-full px-4 py-2 border border-black rounded-lg text-black"
               required
             />
           </div>
@@ -42,7 +42,7 @@ export default function ExpenseForm({ onClose, onChange, onSubmit, formData }: E
               placeholder="Category"
               value={formData.category}
               onChange={onChange}
-              className="w-full px-4 py-2 border border-black rounded-lg"
+              className="w-full px-4 py-2 border border-black rounded-lg text-black"
               required
             />
           </div>
@@ -55,7 +55,7 @@ export default function ExpenseForm({ onClose, onChange, onSubmit, formData }: E
               placeholder="Description"
               value={formData.description}
               onChange={onChange}
-              className="w-full px-4 py-2 border border-black rounded-lg"
+              className="w-full px-4 py-2 border border-black rounded-lg text-black"
             />
           </div>
 
@@ -68,7 +68,7 @@ export default function ExpenseForm({ onClose, onChange, onSubmit, formData }: E
               placeholder="Amount"
               value={formData.amount}
               onChange={onChange}
-              className="w-full px-4 py-2 border border-black rounded-lg"
+              className="w-full px-4 py-2 border border-black rounded-lg text-black"
               required
             />
           </div>
@@ -81,7 +81,7 @@ export default function ExpenseForm({ onClose, onChange, onSubmit, formData }: E
               name="date"
               value={formData.date}
               onChange={onChange}
-              className="w-full px-4 py-2 border border-black rounded-lg"
+              className="w-full px-4 py-2 border border-black rounded-lg text-black"
               required
             />
           </div>

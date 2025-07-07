@@ -1,15 +1,10 @@
 import { Pencil, Trash2 } from 'lucide-react';
-type ExpenseItem = {
-  title: string;
-  amount: number;
-  category: string;
-  description: string;
-  date: string; // or Date, if you prefer
-};
+import { Expense } from '@/lib/expense/types';
 
-export default function ExpenseCard({ title, amount, category, description }:ExpenseItem) {
+
+export default function ExpenseCard({ title, amount, category, description }:Expense) {
   return (
-    <div className="border border-black rounded-xl p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 max-w-full w-full">
+    <div className="border border-black rounded-xl p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 max-w-full w-full text-black">
       <div className="flex justify-between font-bold text-base sm:text-lg md:text-xl">
         <span className="truncate max-w-[70%]">{title}</span>
         <span>₹{amount}</span>

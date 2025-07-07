@@ -2,79 +2,88 @@
 
 import { useEffect, useState, useRef } from 'react';
 
-
 type DateItem = {
   iso: string;
   date: number;
   day: string;
   fullDate: Date;
-  month:string;
-  year:number
+  month: string;
+  year: number;
 };
 
 type DateSelectorProps = {
-  selectedDate: string; // typically a string in 'YYYY-MM-DD' format
+  selectedDate: string; // typically 'YYYY-MM-DD'
   onDateChange: (date: string) => void;
 };
 
-function getDatesAroundToday(range = 2): DateItem[] {
+function getDatesAroundToday(range = 15): DateItem[] {
   const today = new Date();
   const dates: DateItem[] = [];
 
   for (let i = -range; i <= range; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
+    const d = new Date(today.getTime()); 
+    d.setDate(d.getDate() + i); 
+
+    const iso = d.toISOString().split('T')[0]; 
 
     dates.push({
       date: d.getDate(),
       day: d.toLocaleDateString('en-US', { weekday: 'short' }),
       fullDate: d,
-      iso: d.toISOString().split('T')[0], // 'YYYY-MM-DD'
-      month: d.toLocaleDateString('en-US', { month: 'long' }), // e.g. "June"
+      iso ,
+      month: d.toLocaleDateString('en-US', { month: 'long' }), 
       year: d.getFullYear(),
     });
   }
+
   return dates;
 }
 
-export default function DateSelector({ selectedDate, onDateChange }:DateSelectorProps) {
-  const [dates, setDates] = useState<DateItem[]>([]);
 
-const containerRef = useRef<HTMLDivElement | null>(null);
+export default function DateSelector({ selectedDate, onDateChange }: DateSelectorProps) {
+  const [dates, setDates] = useState<DateItem[]>([]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const hasScrolledOnce = useRef(false);
+
   useEffect(() => {
     const initialDates = getDatesAroundToday(15);
     setDates(initialDates);
+
+    const todayISO = new Date().toISOString().split('T')[0];
+    if (selectedDate !== todayISO) {
+      onDateChange(todayISO || "01/01/2000"); 
+    }
   }, []);
 
+  // 2. Center the selected date
   useEffect(() => {
-  if (!selectedDate || !containerRef.current) return;
+    if (!selectedDate || !containerRef.current) return;
 
-  const index = dates.findIndex((d) => d.iso === selectedDate);
-  if (index === -1) return;
+    const index = dates.findIndex((d) => d.iso === selectedDate);
+    if (index === -1) return;
 
-  const container = containerRef.current;
-  const itemWidth = 58 + 12 + 12; // Width + margin + approx padding in px (adjust if needed)
-  const scrollPosition = itemWidth * index - container.clientWidth / 2 + itemWidth / 2;
+    const container = containerRef.current;
+    const item = container.children[index] as HTMLElement;
+    if (!item) return;
 
-  container.scrollTo({ 
-    left: scrollPosition, 
-    behavior: hasScrolledOnce.current ? 'smooth' : 'auto' 
-  });
+    const scrollPosition =
+      item.offsetLeft - container.clientWidth / 2 + item.clientWidth / 2;
 
-  hasScrolledOnce.current = true;
-}, [selectedDate, dates]);
+    container.scrollTo({
+      left: scrollPosition,
+      behavior: hasScrolledOnce.current ? 'smooth' : 'auto',
+    });
+
+    hasScrolledOnce.current = true;
+  }, [selectedDate, dates]);
 
   return (
     <div
       ref={containerRef}
-      className="flex overflow-x-auto gap-3 mt-4 px-2 scrollbar-hide"
+      className="flex overflow-x-auto gap-3 mt-4 px-2 scrollbar-hide text-black"
     >
-      {dates && dates.map(({ day, date, month, year, iso }, i) => {
-        const isFirstOfMonth =
-                                i === 0 ||
-                                dates[i - 1]?.month !== month ||
-                                dates[i - 1]?.year !== year;
+      {dates.map(({ day, date, month, year, iso }, i) => {
+        const isFirstOfMonth = dates[i + 1]?.date === 1;
         const active = iso === selectedDate;
 
         return (

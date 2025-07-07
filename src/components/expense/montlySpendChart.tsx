@@ -17,11 +17,13 @@ Chart.register(ArcElement, Tooltip, Legend);
 type MonthlySpendSummaryProps = {
   monthlySpend: number;
   yearlySpend: number;
+  currentMonth:string;
 };
 
 export default function MonthlySpendChart({
   monthlySpend,
   yearlySpend,
+  currentMonth
 }: MonthlySpendSummaryProps) {
   const remainingSpend =
     yearlySpend - monthlySpend > 0 ? yearlySpend - monthlySpend : 0;
@@ -64,7 +66,10 @@ export default function MonthlySpendChart({
 
   return (
     <div className="relative max-w-xs mx-auto p-4 bg-white rounded-lg shadow-md mb-4">
-      <h2 className="text-xl font-semibold mb-4 text-center">Monthly Expenses</h2>
+      <h2 className="text-xl font-semibold mb-4">Monthly Expenses</h2>
+        <h3 className="text-sm text-grey font-bold  mb-4">
+        Current Month - {currentMonth} 
+      </h3>
       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
         <span className="text-2xl font-bold">₹{monthlySpend}</span>
         <span className="text-sm text-gray-600">Spend</span>
