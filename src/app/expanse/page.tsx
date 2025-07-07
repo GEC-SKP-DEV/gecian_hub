@@ -4,11 +4,12 @@ import { Plus } from 'lucide-react';
 import ExpenseCard from '@/components/expense/ExpenseCard';
 import ExpenseForm from '@/components/expense/expenseForm';
 import DateSelector from '@/components/expense/DateSelector';
-import { getAllExpenses, addExpense } from '@/lib/expense/idb';
+import { getAllExpenses, addExpense, updateExpense, deleteExpense } from '@/lib/expense/idb';
 import Link from 'next/link';
 
 export default function ExpenseDetailsPage() {
   const today = new Date().toISOString().split('T')[0];
+  const [editId, setEditId] = useState<number | null>(null);
 
   const [expenses, setExpenses] = useState<any[]>([]);
   const [formData, setFormData] = useState({
@@ -32,13 +33,30 @@ export default function ExpenseDetailsPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+      const handleEdit = (expense: any) => {
+      setFormData({ ...expense, amount: String(expense.amount) });
+      setEditId(expense.id);
+      setShowForm(true);
+    };
+
+    const handleDelete = async (id: number) => {
+      await deleteExpense(id);
+      setExpenses(await getAllExpenses());
+    };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await addExpense({ ...formData, amount: parseFloat(formData.amount) });
+    const data = { ...formData, amount: parseFloat(formData.amount) };
+    if (editId !== null) {
+      await updateExpense(editId, data);
+    } else {
+      await addExpense(data);
+    }
     setShowForm(false);
     setFormData({ title: '', amount: '', category: '', description: '', date: today });
+    setEditId(null);
   };
+
 
   const filteredExpenses = expenses.filter((e) => e.date === selectedDate);
   const totalAmount = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
@@ -60,7 +78,10 @@ export default function ExpenseDetailsPage() {
         {filteredExpenses.length === 0 ? (
           <p className="text-gray-500 text-center">No expenses for selected date.</p>
         ) : (
-          filteredExpenses.map((e, i) => <ExpenseCard key={i} {...e} />)
+          filteredExpenses.map((e, i) => (
+          <ExpenseCard key={i} {...e} onEdit={() => handleEdit(e)} onDelete={() => handleDelete(e.id)} />
+        ))
+
         )}
       </div></>}
 

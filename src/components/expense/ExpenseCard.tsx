@@ -1,8 +1,11 @@
 import { Pencil, Trash2 } from 'lucide-react';
 import { Expense } from '@/lib/expense/types';
 
-
-export default function ExpenseCard({ title, amount, category, description }:Expense) {
+type Props = Expense & {
+  onEdit?: () => void;
+  onDelete?: () => void;
+};
+export default function ExpenseCard({ title, amount, category, description ,onEdit,onDelete,}: Props) {
   return (
     <div className="border border-black rounded-xl p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 max-w-full w-full text-black">
       <div className="flex justify-between font-bold text-base sm:text-lg md:text-xl">
@@ -16,8 +19,8 @@ export default function ExpenseCard({ title, amount, category, description }:Exp
         {description}
       </p>
       <div className="flex justify-end gap-4 mt-3">
-        <Pencil className="w-5 h-5 sm:w-6 sm:h-6 cursor-pointer" />
-        <Trash2 className="w-5 h-5 sm:w-6 sm:h-6 cursor-pointer" />
+        <Pencil className="w-5 h-5 cursor-pointer" onClick={onEdit} />
+        <Trash2 className="w-5 h-5 cursor-pointer" onClick={onDelete} />
       </div>
     </div>
   );
