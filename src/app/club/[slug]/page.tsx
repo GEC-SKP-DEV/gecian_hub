@@ -8,7 +8,7 @@ export default async function ClubDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;    // ✅ await the Promise
+  const { slug } = await params;   
 
   const club = clubData.find((c) => c.slug === slug);
   if (!club) notFound();
