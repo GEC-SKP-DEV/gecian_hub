@@ -11,7 +11,7 @@ const BottomNavBar = () => {
     { name: "home", icon: Home2,href: "/", label: "Home" },
     { name: "studymaterial", icon: Book, href: "/studymaterial", label: "Study" },
     { name: "attendance", icon: Calendar2 , href: "/attendance", label: "Attendance" },
-    { name: "finance", icon:Money, href: "/finance", label: "Finance" },]
+    { name: "finance", icon:Money, href: "/expanse", label: "Finance" },]
  
 
   return (
