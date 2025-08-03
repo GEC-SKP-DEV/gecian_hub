@@ -1,16 +1,17 @@
-import BottomNavBar from '@/components/bottemNavbar';
-import TopNavBar from '@/components/topNavbar';
-import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
+import BottomNavBar from "../components/bottomNavbar";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export default function RootLayout({
@@ -20,16 +21,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* <link rel="manifest" href="/manifest.ts" /> */}
-      </head>
+      <head>{/* <link rel="manifest" href="/manifest.ts" /> */}</head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TopNavBar userName="John Doe" />
-
+      
         {children}
-
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            className: "bg-gray-800 text-white",
+            style: {
+              fontFamily: "var(--font-geist-sans)",
+              fontSize: "14px",
+            },
+          }}></Toaster>
         <BottomNavBar />
       </body>
     </html>
