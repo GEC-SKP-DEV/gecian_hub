@@ -8,6 +8,7 @@ const BottomNavBar = () => {
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
 
   const tabs = [
+
     { name: "home", icon: Home2, href: "/", label: "Home" },
     {
       name: "studymaterial",
@@ -23,6 +24,7 @@ const BottomNavBar = () => {
     },
     { name: "finance", icon: Money, href: "/finance", label: "Finance" },
   ];
+
 
   return (
     <nav className="fixed left-6 right-6 bottom-8 border-t border-gray-300 bg-[var(--main)] max-w-[var(--max-screen-size)] mx-auto text-foreground rounded-2xl">
