@@ -1,16 +1,18 @@
-import { openDB } from 'idb';
-import { Expense } from './types';
+import { openDB } from "idb";
 
-const DB_NAME = 'ExpenseDB';
-const STORE_NAME = 'expenses';
+const DB_NAME = "ExpenseDB";
+const STORE_NAME = "expenses";
 
 export async function getDB() {
   return openDB(DB_NAME, 1, {
     upgrade(db) {
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+        db.createObjectStore(STORE_NAME, {
+          keyPath: "id",
+          autoIncrement: true,
+        });
       }
-    }
+    },
   });
 }
 
@@ -23,9 +25,12 @@ export async function addExpense(expense: Expense): Promise<void> {
   const db = await getDB();
   await db.add(STORE_NAME, expense);
 }
- export async function updateExpense(id: number, updatedData: Partial<Expense>): Promise<void> {
+export async function updateExpense(
+  id: number,
+  updatedData: Partial<Expense>
+): Promise<void> {
   const db = await getDB();
-  const tx = db.transaction(STORE_NAME, 'readwrite');
+  const tx = db.transaction(STORE_NAME, "readwrite");
   const store = tx.objectStore(STORE_NAME);
   const existing = await store.get(id);
 
@@ -37,7 +42,16 @@ export async function addExpense(expense: Expense): Promise<void> {
 
 export async function deleteExpense(id: number): Promise<void> {
   const db = await getDB();
-  const tx = db.transaction(STORE_NAME, 'readwrite');
+  const tx = db.transaction(STORE_NAME, "readwrite");
   await tx.objectStore(STORE_NAME).delete(id);
   await tx.done;
 }
+
+export type Expense = {
+  id?: number;
+  title: string;
+  category: string;
+  description: string;
+  amount: number;
+  date: string; // must be string
+};

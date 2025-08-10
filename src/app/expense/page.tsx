@@ -61,7 +61,7 @@ export default function ExpenseDetailsPage() {
     const data = {
       ...formData,
       amount: parseFloat(formData.amount),
-      date: formData.date ? formData.date : today, // always a string
+      date: formData.date || today, // <-- ensures date is always a string
     };
     if (editId !== null) {
       await updateExpense(editId, data);

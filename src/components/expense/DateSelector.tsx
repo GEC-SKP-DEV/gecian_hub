@@ -24,7 +24,7 @@ function getDatesAroundToday(range = 15): DateItem[] {
     const d = new Date(today.getTime()); 
     d.setDate(d.getDate() + i); 
 
-    const iso = d.toISOString().split('T')[0]; 
+    const iso = d.toISOString().split('T')[0] || '';
 
     dates.push({
       date: d.getDate(),
