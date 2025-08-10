@@ -20,7 +20,7 @@ This app helps students manage complaints, expenses, projects, hackathons, and m
 - ⚡ Edge runtime compatible (Cloudflare Workers)
 - 🖋️ Modern design with [Geist](https://vercel.com/font)
 - 🔒 TypeScript for safety
-
+- 
 ---
 
 ## 🛠️ Getting Started
@@ -74,3 +74,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ## 📝 License
 
 This project is licensed under the MIT License.
+
+# build by codecompass
