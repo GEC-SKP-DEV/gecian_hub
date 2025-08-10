@@ -21,6 +21,7 @@ import {
   getSubjects,
 } from "@/lib/idb";
 import toast from "react-hot-toast";
+export const runtime = 'edge';
 
 export default function SubjectCalendarPage() {
   const { id: subjectId } = useParams();

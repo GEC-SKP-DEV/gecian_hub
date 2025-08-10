@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // import { getAuth } from 'firebase-admin/auth';
 // import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { serialize } from 'cookie';
+export const runtime = 'edge';
 
 // const serviceAccount = {
 //   projectId: process.env.FIREBASE_PROJECT_ID,

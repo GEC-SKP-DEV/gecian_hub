@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 export const dynamic = 'force-static';  // Add this line
+export const runtime = 'edge';
 
 const isDev = process.env.NODE_ENV === 'development';
 const complaintsFile = isDev ? path.join(process.cwd(), 'complaints.json') : null;

@@ -2,6 +2,7 @@
 import { notFound } from 'next/navigation';
 import clubData from 'src/components/club/ClubData';
 import ClubDetail from '@/components/club/ClubDetail';
+export const runtime = 'edge';
 
 export default async function ClubDetailPage({
   params,
