@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gecian Hub
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-13+-blue?logo=nextdotjs)](https://nextjs.org/)
+[![License](https://img.shields.io/github/license/shadilrayyan/gecian_hub?style=flat-square)](LICENSE)
+[![Cloudflare Workers](https://img.shields.io/badge/Edge%20Runtime-Cloudflare%20Workers-orange?logo=cloudflare)](https://developers.cloudflare.com/workers/)
 
-First, run the development server:
+A modern student portal for GECians, built with Next.js and designed to run on edge platforms like Cloudflare Workers.  
+This app helps students manage complaints, expenses, projects, hackathons, and more—all in one place.
+
+---
+
+## 🚀 Features
+
+- 📋 Complaint management system
+- 💸 Expense tracker
+- 🤝 Project collaboration
+- 🏆 Hackathon info & links
+- 🔗 Quick access buttons to external student resources
+- 🗂 Tabs and cards UI
+- ⚡ Edge runtime compatible (Cloudflare Workers)
+- 🖋️ Modern design with [Geist](https://vercel.com/font)
+- 🔒 TypeScript for safety
+
+---
+
+## 🛠️ Getting Started
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/shadilrayyan/gecian_hub.git
+cd gecian_hub
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Deployment
 
-## Learn More
+### Vercel
 
-To learn more about Next.js, take a look at the following resources:
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Cloudflare Workers
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Edge API routes are compatible with Cloudflare Workers.
+- For persistent storage, use [Cloudflare KV](https://developers.cloudflare.com/workers/runtime-apis/kv/) or [D1](https://developers.cloudflare.com/d1/).
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📚 Learn More
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/)
+- [Vercel Docs](https://vercel.com/docs)
+
+---
+
+## 🤝 Contributing
+
+Pull requests and issues are welcome!  
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License.
