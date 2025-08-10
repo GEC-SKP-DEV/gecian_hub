@@ -13,18 +13,26 @@ import {
 import Link from "next/link";
 
 export default function ExpenseDetailsPage() {
-  const today = new Date().toISOString().split("T")[0];
-  const [editId, setEditId] = useState<number | null>(null);
+  // Force type to string
+  const today: string = new Date().toISOString().split("T")[0]!;
 
+  const [editId, setEditId] = useState<number | null>(null);
   const [expenses, setExpenses] = useState<any[]>([]);
-  const [formData, setFormData] = useState({
+  const [selectedDate, setSelectedDate] = useState<string>(today);
+  const [formData, setFormData] = useState<{
+    title: string;
+    amount: string;
+    category: string;
+    description: string;
+    date: string;
+  }>({
     title: "",
     amount: "",
     category: "",
     description: "",
-    date: today, // always a string
+    date: today,
   });
-  const [selectedDate, setSelectedDate] = useState(today);
+
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
@@ -34,13 +42,14 @@ export default function ExpenseDetailsPage() {
     })();
   }, [showForm]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "date" ? value || today : value,
+      [name]: name === "date" ? (value || today) : value,
     }));
   };
+
   const handleEdit = (expense: any) => {
     setFormData({
       ...expense,
@@ -56,12 +65,12 @@ export default function ExpenseDetailsPage() {
     setExpenses(await getAllExpenses());
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const data = {
       ...formData,
       amount: parseFloat(formData.amount),
-      date: formData.date || today, // <-- ensures date is always a string
+      date: (formData.date || today) as string,
     };
     if (editId !== null) {
       await updateExpense(editId, data);
@@ -83,20 +92,21 @@ export default function ExpenseDetailsPage() {
   const totalAmount = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
 
   return (
-    <div className="min-h-screen bg-white p-4 ">
+    <div className="min-h-screen bg-white p-4">
       <div className="flex justify-between items-center mb-4 text-center">
         <h1 className="text-2xl text-center font-bold text-black w-full">
           Expense Tracker
         </h1>
       </div>
+
       {!showForm && (
         <>
           <DateSelector
-            selectedDate={selectedDate ? selectedDate : today}
+            selectedDate={selectedDate ?? today}
             onDateChange={setSelectedDate}
           />
 
-          <div className="flex justify-between mt-4 text-black ">
+          <div className="flex justify-between mt-4 text-black">
             <h2 className="text-lg font-semibold">Expenses</h2>
             <span className="font-semibold underline mb-1">
               Total: ₹{totalAmount}
@@ -129,7 +139,7 @@ export default function ExpenseDetailsPage() {
           onSubmit={handleSubmit}
           formData={{
             ...formData,
-            date: formData.date ?? today, // ensures date is always a string
+            date: formData.date ?? today,
           }}
         />
       )}
