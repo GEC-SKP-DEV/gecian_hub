@@ -5,7 +5,7 @@ import ExpenseCard from "@/components/expense/ExpenseCard";
 import ExpenseForm from "@/components/expense/expenseForm";
 import DateSelector from "@/components/expense/DateSelector";
 import {
-  getAllExpenses,
+  getExpensesByDate,
   addExpense,
   updateExpense,
   deleteExpense,
@@ -37,10 +37,10 @@ export default function ExpenseDetailsPage() {
 
   useEffect(() => {
     (async () => {
-      const data = await getAllExpenses();
+      const data = await getExpensesByDate(selectedDate);
       setExpenses(data);
     })();
-  }, [showForm]);
+  }, [selectedDate, showForm]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -62,7 +62,7 @@ export default function ExpenseDetailsPage() {
 
   const handleDelete = async (id: number) => {
     await deleteExpense(id);
-    setExpenses(await getAllExpenses());
+    setExpenses(await getExpensesByDate(selectedDate));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,8 +88,7 @@ export default function ExpenseDetailsPage() {
     setEditId(null);
   };
 
-  const filteredExpenses = expenses.filter((e) => e.date === selectedDate);
-  const totalAmount = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
+  const totalAmount = expenses.reduce((sum, e) => sum + e.amount, 0);
 
   return (
     <div className="min-h-screen bg-white p-4">
@@ -114,12 +113,12 @@ export default function ExpenseDetailsPage() {
           </div>
 
           <div className="flex flex-col gap-3 mt-3">
-            {filteredExpenses.length === 0 ? (
+            {expenses.length === 0 ? (
               <p className="text-gray-500 text-center">
                 No expenses for selected date.
               </p>
             ) : (
-              filteredExpenses.map((e, i) => (
+              expenses.map((e, i) => (
                 <ExpenseCard
                   key={i}
                   {...e}
@@ -154,7 +153,7 @@ export default function ExpenseDetailsPage() {
           </button>
 
           <Link
-            href="/expanse/montly"
+            href="/expense/montly"
             className="fixed bottom-24 left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold px-4 py-2 rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
           >
             📊 Monthly View

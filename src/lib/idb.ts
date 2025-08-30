@@ -1,18 +1,4 @@
-import { openDB, IDBPDatabase, DBSchema } from "idb";
 import { eachDayOfInterval, isWeekend, addDays } from "date-fns";
-
-interface AttendanceDB extends DBSchema {
-  subjects: {
-    key: string;
-    value: { id: string; name: string; createdAt: string }; // Added createdAt
-  };
-  attendance: {
-    key: string;
-    value: { id: string; subjectId: string; date: string; status: string };
-  };
-}
-
-let dbPromise: Promise<IDBPDatabase<AttendanceDB>> | null = null;
 
 function getTodayDateString(): string {
   const today = new Date();
@@ -21,23 +7,30 @@ function getTodayDateString(): string {
     .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`;
 }
 
-function getDB() {
-  if (typeof window === "undefined") {
-    throw new Error("IndexedDB is not available on the server");
-  }
-  if (!dbPromise) {
-    dbPromise = openDB<AttendanceDB>("attendance-db", 1, {
-      upgrade(db) {
-        if (!db.objectStoreNames.contains("subjects")) {
-          db.createObjectStore("subjects", { keyPath: "id" });
-        }
-        if (!db.objectStoreNames.contains("attendance")) {
-          db.createObjectStore("attendance", { keyPath: "id" });
-        }
-      },
-    });
-  }
-  return dbPromise;
+// LocalStorage keys
+const LS_SUBJECTS = "attendance_subjects";
+const LS_ATTENDANCE = "attendance_records";
+
+type Subject = { id: string; name: string; createdAt: string };
+type AttendanceRecord = { id: string; subjectId: string; date: string; status: "present"|"absent"|"duty" };
+
+function readSubjects(): Subject[] {
+  if (typeof window === "undefined") return [];
+  const raw = localStorage.getItem(LS_SUBJECTS);
+  try { return raw ? (JSON.parse(raw) as Subject[]) : []; } catch { return []; }
+}
+function writeSubjects(list: Subject[]) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(LS_SUBJECTS, JSON.stringify(list));
+}
+function readAttendance(): AttendanceRecord[] {
+  if (typeof window === "undefined") return [];
+  const raw = localStorage.getItem(LS_ATTENDANCE);
+  try { return raw ? (JSON.parse(raw) as AttendanceRecord[]) : []; } catch { return []; }
+}
+function writeAttendance(list: AttendanceRecord[]) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(LS_ATTENDANCE, JSON.stringify(list));
 }
 
 // ------ SUBJECTS
@@ -50,35 +43,22 @@ export const addSubject = async (name: string) => {
   } else if (created.getDay() === 0) {
     created = addDays(created, 1);
   }
-  const db = await getDB();
-  await db.add("subjects", {
-    id: crypto.randomUUID(),
-    name,
-    createdAt: created.toISOString().slice(0, 10), // Store adjusted creation date
-  });
+  const subs = readSubjects();
+  subs.push({ id: crypto.randomUUID(), name, createdAt: created.toISOString().slice(0, 10) });
+  writeSubjects(subs);
 };
 
-export const getSubjects = async () => {
-  const db = await getDB();
-  return db.getAll("subjects");
-};
+export const getSubjects = async () => readSubjects();
 
 export const getAllSubjects = getSubjects;
 
-export const getSubjectById = async (subjectId: string) => {
-  const db = await getDB();
-  return db.get("subjects", subjectId);
-};
+export const getSubjectById = async (subjectId: string) => readSubjects().find(s => s.id === subjectId) || null;
 
 export const deleteSubject = async (subjectId: string) => {
-  const db = await getDB();
-  await db.delete("subjects", subjectId);
-  // Remove all attendance records for this subject
-  const all = await db.getAll("attendance");
-  const related = all.filter((a) => a.subjectId === subjectId);
-  for (const record of related) {
-    await db.delete("attendance", record.id);
-  }
+  const subs = readSubjects().filter(s => s.id !== subjectId);
+  writeSubjects(subs);
+  const att = readAttendance().filter(a => a.subjectId !== subjectId);
+  writeAttendance(att);
 };
 
 // ------ ATTENDANCE
@@ -88,13 +68,11 @@ export const markAttendance = async (subjectId: string, dateInput?: string) => {
   const todayStr = getTodayDateString();
   const date = dateInput || todayStr;
   const id = `${subjectId}_${date}`;
-  const db = await getDB();
-  await db.put("attendance", {
-    id,
-    subjectId,
-    date,
-    status: "present",
-  });
+  const list = readAttendance();
+  const idx = list.findIndex(r => r.id === id);
+  const rec: AttendanceRecord = { id, subjectId, date, status: "present" };
+  if (idx >= 0) list[idx] = rec; else list.push(rec);
+  writeAttendance(list);
 };
 
 // Undo (unmark) attendance: remove present mark for a given date
@@ -102,44 +80,59 @@ export const unmarkAttendance = async (subjectId: string, dateInput?: string) =>
   const todayStr = getTodayDateString();
   const date = dateInput || todayStr;
   const id = `${subjectId}_${date}`;
-  const db = await getDB();
-  await db.delete("attendance", id);
+  const list = readAttendance();
+  const idx = list.findIndex(r => r.id === id);
+  const rec: AttendanceRecord = { id, subjectId, date, status: "absent" };
+  if (idx >= 0) list[idx] = rec; else list.push(rec);
+  writeAttendance(list);
+};
+
+// Set duty leave
+export const setDutyLeave = async (subjectId: string, dateInput?: string) => {
+  const todayStr = getTodayDateString();
+  const date = dateInput || todayStr;
+  const id = `${subjectId}_${date}`;
+  const list = readAttendance();
+  const idx = list.findIndex(r => r.id === id);
+  const rec: AttendanceRecord = { id, subjectId, date, status: "duty" };
+  if (idx >= 0) list[idx] = rec; else list.push(rec);
+  writeAttendance(list);
+};
+
+// Generic setter
+export const setAttendanceStatus = async (subjectId: string, date: string, status: "present"|"absent"|"duty") => {
+  const id = `${subjectId}_${date}`;
+  const list = readAttendance();
+  const idx = list.findIndex(r => r.id === id);
+  const rec: AttendanceRecord = { id, subjectId, date, status };
+  if (idx >= 0) list[idx] = rec; else list.push(rec);
+  writeAttendance(list);
 };
 
 // Retrieve attendance records by subject
-export const getAttendanceBySubject = async (subjectId: string) => {
-  const db = await getDB();
-  const all = await db.getAll("attendance");
-  return all.filter((a) => a.subjectId === subjectId);
-};
+export const getAttendanceBySubject = async (subjectId: string) => readAttendance().filter(a => a.subjectId === subjectId);
 
 // Retrieve attendance records for all subjects on a date
-export const getAttendanceByDate = async (date: string) => {
-  const db = await getDB();
-  const all = await db.getAll("attendance");
-  return all.filter((a) => a.date === date);
-};
+export const getAttendanceByDate = async (date: string) => readAttendance().filter(a => a.date === date);
 
 // Get present/absent status for a subject on a date ("present" | "absent")
 export const getAttendanceStatus = async (subjectId: string, date: string) => {
-  const db = await getDB();
   const id = `${subjectId}_${date}`;
-  const record = await db.get("attendance", id);
-  if (record && record.status === "present") return "present";
-  return "absent";
+  const record = readAttendance().find(r => r.id === id);
+  if (!record) return "absent";
+  return (record.status as "present"|"absent"|"duty");
 };
 
 // ------ STATS
 
 export const getAttendanceStats = async (subjectId: string) => {
-  const db = await getDB();
-  const subject = await db.get("subjects", subjectId);
+  const subject = readSubjects().find(s => s.id === subjectId);
 
   if (!subject) {
     return { present: 0, total: 0, percent: 0 };
   }
 
-  const allAttendance = await db.getAll("attendance");
+  const allAttendance = readAttendance();
   const subjectRecords = allAttendance.filter((a) => a.subjectId === subjectId);
 
   // Present days set
@@ -169,7 +162,6 @@ export const getAttendanceStats = async (subjectId: string) => {
 // ----------
 
 export const isMarked = async (subjectId: string) => {
-  const db = await getDB();
   const id = `${subjectId}_${getTodayDateString()}`;
-  return (await db.get("attendance", id)) != null;
+  return readAttendance().some(r => r.id === id && r.status === "present");
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 
 type DateItem = {
   iso: string;
@@ -16,26 +16,21 @@ type DateSelectorProps = {
   onDateChange: (date: string) => void;
 };
 
-function getDatesAroundToday(range = 15): DateItem[] {
-  const today = new Date();
+function buildDatesAround(base: Date, before = 15, after = 15): DateItem[] {
   const dates: DateItem[] = [];
-
-  for (let i = -range; i <= range; i++) {
-    const d = new Date(today.getTime()); 
-    d.setDate(d.getDate() + i); 
-
+  for (let i = -before; i <= after; i++) {
+    const d = new Date(base.getTime());
+    d.setDate(d.getDate() + i);
     const iso = d.toISOString().split('T')[0] || '';
-
     dates.push({
       date: d.getDate(),
       day: d.toLocaleDateString('en-US', { weekday: 'short' }),
       fullDate: d,
-      iso ,
-      month: d.toLocaleDateString('en-US', { month: 'long' }), 
+      iso,
+      month: d.toLocaleDateString('en-US', { month: 'long' }),
       year: d.getFullYear(),
     });
   }
-
   return dates;
 }
 
@@ -44,23 +39,30 @@ export default function DateSelector({ selectedDate, onDateChange }: DateSelecto
   const [dates, setDates] = useState<DateItem[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const hasScrolledOnce = useRef(false);
+  const EXTEND_CHUNK = 30;
 
   useEffect(() => {
-    const initialDates = getDatesAroundToday(15);
+    const initialDates = buildDatesAround(new Date(), 15, 15);
     setDates(initialDates);
-
-    const todayISO = new Date().toISOString().split('T')[0];
-    if (selectedDate !== todayISO) {
-      onDateChange(todayISO || "01/01/2000"); 
-    }
   }, []);
 
   // 2. Center the selected date
   useEffect(() => {
     if (!selectedDate || !containerRef.current) return;
 
-    const index = dates.findIndex((d) => d.iso === selectedDate);
-    if (index === -1) return;
+    let index = dates.findIndex((d) => d.iso === selectedDate);
+    if (index === -1) {
+      // extend list around selectedDate to include it
+      const base = new Date(selectedDate);
+      const extended = buildDatesAround(base, EXTEND_CHUNK, EXTEND_CHUNK);
+      setDates((prev) => {
+        // merge without duplicates
+        const map = new Map<string, DateItem>();
+        [...prev, ...extended].forEach((it) => map.set(it.iso, it));
+        return Array.from(map.values()).sort((a, b) => a.fullDate.getTime() - b.fullDate.getTime());
+      });
+      return;
+    }
 
     const container = containerRef.current;
     const item = container.children[index] as HTMLElement;
@@ -77,10 +79,32 @@ export default function DateSelector({ selectedDate, onDateChange }: DateSelecto
     hasScrolledOnce.current = true;
   }, [selectedDate, dates]);
 
+  const onScroll = useCallback(() => {
+    const container = containerRef.current;
+    const localDates = dates;
+    if (!container || localDates.length === 0) return;
+
+    const nearLeft = container.scrollLeft < 40;
+    const nearRight = container.scrollWidth - container.clientWidth - container.scrollLeft < 40;
+
+    if (nearLeft) {
+      const first = localDates[0].fullDate;
+      const before = buildDatesAround(new Date(first), EXTEND_CHUNK, 0);
+      setDates((prev) => [...before.slice(0, EXTEND_CHUNK), ...prev]);
+      container.scrollLeft += 58 * EXTEND_CHUNK; // keep visual position roughly stable
+    }
+    if (nearRight) {
+      const last = localDates[localDates.length - 1].fullDate;
+      const after = buildDatesAround(new Date(last), 0, EXTEND_CHUNK);
+      setDates((prev) => [...prev, ...after.slice(1)]);
+    }
+  }, [dates]);
+
   return (
     <div
       ref={containerRef}
       className="flex overflow-x-auto gap-3 mt-4 px-2 scrollbar-hide text-black"
+      onScroll={onScroll}
     >
       {dates.map(({ day, date, month, year, iso }, i) => {
         const isFirstOfMonth = dates[i + 1]?.date === 1;

@@ -65,7 +65,7 @@ export default function MonthlyOverviewPage() {
       <div
             className={`w-8 h-8 flex items-center justify-center rounded-full border border-gray-400 cursor-pointer transition-transform duration-200 ${
               showMonthlyDetails ? 'rotate-90' : ''
-            }`} onClick={() => router.push('/expanse')}
+            }`} onClick={() => router.push('/expense')}
           >
             <ChevronDown className="w-4 h-4 text-gray-500" />
       </div>
