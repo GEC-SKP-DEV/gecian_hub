@@ -22,13 +22,13 @@ const BottomNavBar = () => {
       href: "/attendance",
       label: "Attendance",
     },
+    { name: "finance", icon: Money, href: "/expense", label: "Finance" },
     {
       name: "event",
       icon: Calendar,
       href: "/events",
       label: "Event",
     },
-    { name: "finance", icon: Money, href: "/expense", label: "Finance" },
   ];
 
 
