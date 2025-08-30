@@ -1,7 +1,5 @@
-//import { BusButtons } from "@/components/Bus/busButton";
+"use client";
 import { busData } from "@/data/bus";
-
- 
 
 const BusPage: React.FC = () => {
   return (
@@ -33,7 +31,12 @@ const BusPage: React.FC = () => {
             // Use BusButtons
             <button
               key={index}
-              className="bg-white border border-black rounded-lg py-7 text-center shadow-md"
+              className="bg-white border border-black rounded-lg py-7 text-center shadow-md hover:shadow-lg transition cursor-pointer"
+              onClick={() => {
+                if ((bus as any).pdfUrl) {
+                  window.open((bus as any).pdfUrl as string, "_blank", "noopener,noreferrer");
+                }
+              }}
             >
               <span className="text-2xl font-bold text-black">{bus.name}</span>
             </button>

@@ -179,8 +179,8 @@ export default function AttendanceCalendarAllSubjects() {
         </header>
 
         <div className="grid grid-cols-7 gap-2 text-xs font-bold mb-1 select-none">
-          {["S", "M", "T", "W", "T", "F", "S"].map((d) => (
-            <div key={d} className="uppercase text-center">
+          {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
+            <div key={`${d}-${i}`} className="uppercase text-center">
               {d}
             </div>
           ))}

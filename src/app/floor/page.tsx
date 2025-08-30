@@ -1,3 +1,4 @@
+"use client";
 import { floors } from "@/data/floor";
 
 const BusPage: React.FC = () => {
@@ -30,7 +31,12 @@ const BusPage: React.FC = () => {
             // Use BusButtons
             <button
               key={index}
-              className="bg-white border border-black rounded-lg py-7 text-center shadow-md"
+              className="bg-white border border-black rounded-lg py-7 text-center shadow-md hover:shadow-lg transition cursor-pointer"
+              onClick={() => {
+                if ((floor as any).pdfUrl) {
+                  window.open((floor as any).pdfUrl as string, "_blank", "noopener,noreferrer");
+                }
+              }}
             >
               <span className="text-2xl font-bold text-black">{floor.name}</span>
             </button>
