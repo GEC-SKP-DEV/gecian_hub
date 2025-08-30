@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import BottomNavBar from "@/components/bottomNavbar";
-import { Book, Calendar2, Home2, Money } from "iconsax-react";
+import { Book, Calendar2, Calendar, Home2, Money } from "iconsax-react";
 
 // Mock the icons to verify they're rendered
 jest.mock("iconsax-react", () => ({
   Book: jest.fn(() => <div data-testid="book-icon" />),
   Calendar2: jest.fn(() => <div data-testid="calendar-icon" />),
+  Calendar: jest.fn(() => <div data-testid="calendar-event-icon" />),
   Home2: jest.fn(() => <div data-testid="home-icon" />),
   Money: jest.fn(() => <div data-testid="money-icon" />),
 }));
@@ -34,10 +35,10 @@ describe("BottomNavBar Component", () => {
     render(<BottomNavBar />);
 
     const listItems = screen.getAllByRole("listitem");
-    expect(listItems).toHaveLength(4);
+    expect(listItems).toHaveLength(5);
 
     const buttons = screen.getAllByRole("button");
-    expect(buttons).toHaveLength(4);
+    expect(buttons).toHaveLength(5);
   });
 
   it("renders correct icons for each nav item", () => {
@@ -46,6 +47,7 @@ describe("BottomNavBar Component", () => {
     expect(Home2).toHaveBeenCalled();
     expect(Book).toHaveBeenCalled();
     expect(Calendar2).toHaveBeenCalled();
+    expect(Calendar).toHaveBeenCalled();
     expect(Money).toHaveBeenCalled();
 
     // Verify icon props

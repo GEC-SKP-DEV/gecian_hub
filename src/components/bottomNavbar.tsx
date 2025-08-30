@@ -1,5 +1,5 @@
 "use client";
-import { Book, Calendar2, Home2, Money } from "iconsax-react";
+import { Book, Calendar2, Calendar, Home2, Money } from "iconsax-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -21,6 +21,12 @@ const BottomNavBar = () => {
       icon: Calendar2,
       href: "/attendance",
       label: "Attendance",
+    },
+    {
+      name: "event",
+      icon: Calendar,
+      href: "/events",
+      label: "Event",
     },
     { name: "finance", icon: Money, href: "/expense", label: "Finance" },
   ];
