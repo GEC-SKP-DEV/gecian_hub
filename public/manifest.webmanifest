@@ -1,24 +1,56 @@
 {
   "name": "Gecian Hub",
   "short_name": "Gecian",
+  "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
   "description": "A modern student portal for GECians to manage complaints, expenses, attendance, clubs, and events.",
+  "orientation": "portrait",
+  "dir": "ltr",
+  "lang": "en",
+  "categories": ["education", "productivity"],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "screenshots": [
+    {
+      "src": "/codecompass.png",
+      "type": "image/png",
+      "label": "Home and events overview"
+    },
+    {
+      "src": "/images/FingerprintImg.png",
+      "type": "image/png",
+      "label": "Attendance quick action"
+    }
+  ],
+  "launch_handler": { "client_mode": "focus-existing" },
   "icons": [
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
