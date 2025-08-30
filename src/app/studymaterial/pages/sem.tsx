@@ -1,9 +1,8 @@
 import React from 'react';
+import { semesters } from '@/data/study';
 
 const SemPage: React.FC = () => {
-  const semesters = [
-    'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'
-  ];
+  
 
   return (
     <div className="min-h-screen bg-white">

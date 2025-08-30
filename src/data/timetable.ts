@@ -1,4 +1,6 @@
-export const timetableData = [
+import type { DayData } from "@/types/types";
+
+export const timetableData: DayData[] = [
   {
     day: 'Monday',
     schedule: [

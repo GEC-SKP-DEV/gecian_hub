@@ -1,41 +1,19 @@
 "use client";
-import { Book, Calendar2, Calendar, Home2, Money } from "iconsax-react";
 import Link from "next/link";
 import { useState } from "react";
+import { bottomTabs } from "@/data/nav";
 
 const BottomNavBar = () => {
   const [activeTab, setActiveTab] = useState("home");
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
 
-  const tabs = [
-
-    { name: "home", icon: Home2, href: "/", label: "Home" },
-    {
-      name: "studymaterial",
-      icon: Book,
-      href: "/studymaterial",
-      label: "Study",
-    },
-    {
-      name: "attendance",
-      icon: Calendar2,
-      href: "/attendance/calendar",
-      label: "Attendance",
-    },
-    { name: "finance", icon: Money, href: "/expense", label: "Finance" },
-    {
-      name: "event",
-      icon: Calendar,
-      href: "/events",
-      label: "Event",
-    },
-  ];
+  
 
 
   return (
     <nav className="fixed left-6 right-6 bottom-8 border-t border-gray-300 bg-[var(--main)] max-w-[var(--max-screen-size)] mx-auto text-foreground rounded-2xl">
       <ul className="flex items-center justify-around py-2">
-        {tabs.map(({ name, icon: Icon, href, label }) => (
+        {bottomTabs.map(({ name, icon: Icon, href, label }) => (
           <li key={name} className="flex flex-col items-center">
             <button
               type="button"

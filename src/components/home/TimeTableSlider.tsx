@@ -2,7 +2,7 @@
 import type { DayData } from "@/types/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
-import { timetableData } from "./TimeTableData";
+import { timetableData } from "@/data/timetable";
 import { TimeTableDay } from "./TimeTableDay";
 
 type TimeTableSliderProps = {

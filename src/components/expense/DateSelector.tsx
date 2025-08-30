@@ -88,15 +88,19 @@ export default function DateSelector({ selectedDate, onDateChange }: DateSelecto
     const nearRight = container.scrollWidth - container.clientWidth - container.scrollLeft < 40;
 
     if (nearLeft) {
-      const first = localDates[0].fullDate;
-      const before = buildDatesAround(new Date(first), EXTEND_CHUNK, 0);
-      setDates((prev) => [...before.slice(0, EXTEND_CHUNK), ...prev]);
-      container.scrollLeft += 58 * EXTEND_CHUNK; // keep visual position roughly stable
+      const first = localDates[0]?.fullDate;
+      if (first) {
+        const before = buildDatesAround(new Date(first), EXTEND_CHUNK, 0);
+        setDates((prev) => [...before.slice(0, EXTEND_CHUNK), ...prev]);
+        container.scrollLeft += 58 * EXTEND_CHUNK; // keep visual position roughly stable
+      }
     }
     if (nearRight) {
-      const last = localDates[localDates.length - 1].fullDate;
-      const after = buildDatesAround(new Date(last), 0, EXTEND_CHUNK);
-      setDates((prev) => [...prev, ...after.slice(1)]);
+      const last = localDates[localDates.length - 1]?.fullDate;
+      if (last) {
+        const after = buildDatesAround(new Date(last), 0, EXTEND_CHUNK);
+        setDates((prev) => [...prev, ...after.slice(1)]);
+      }
     }
   }, [dates]);
 

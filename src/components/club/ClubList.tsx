@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import ClubCard from './ClubCard';
-import clubData from './ClubData';
+import clubData from '@/data/club';
 import { ArrowLeftIcon, Filter } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
