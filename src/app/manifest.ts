@@ -11,17 +11,13 @@ export default function manifest(): MetadataRoute.Manifest {
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#000000',
-    // icons: [
-    //   {
-    //     src: '@/public/icons/INVENTO.jpg',
-    //     sizes: '192x192',
-    //     type: 'image/jpeg',
-    //   },
-    //   {
-    //     src: '@/public/icons/INVENTO.jpg',
-    //     sizes: '512x512',
-    //     type: 'image/jpeg',
-    //   },
-    // ],
+    icons: [
+      { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+      { src: '/icons/icon-256.png', sizes: '256x256', type: 'image/png', purpose: 'any' },
+      { src: '/icons/icon-384.png', sizes: '384x384', type: 'image/png', purpose: 'any' },
+      { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+      { src: '/icons/icon-192-maskable.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
+      { src: '/icons/icon-512-maskable.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+    ],
   };
 }
