@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { TimeTableSlider } from "./TimeTableSlider";
-import Papa from "papaparse";
 import { DocumentUpload, NoteRemove } from "iconsax-react";
 
 function dataURLtoFile(dataurl: string, filename: string): File {
@@ -16,24 +14,13 @@ function dataURLtoFile(dataurl: string, filename: string): File {
 
 const TimeTableBlock = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [csvData, setCsvData] = useState<string[][] | null>(null);
-  const [currentDay, setCurrentDay] = useState(0);
+  const [defaultSrc, setDefaultSrc] = useState<string | null>(null); 
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => setIsExpanded((prev) => !prev);
 
-  const nextDay = () => setCurrentDay((prev) => (prev === 4 ? 0 : prev + 1));
-  const prevDay = () => setCurrentDay((prev) => (prev === 0 ? 4 : prev - 1));
-
   useEffect(() => {
     const type = localStorage.getItem("timetableType");
-
-    if (type === "csv") {
-      const csv = localStorage.getItem("timetableCSV");
-      if (csv) {
-        setCsvData(JSON.parse(csv));
-      }
-    }
 
     if (type === "image") {
       const imageData = localStorage.getItem("timetableImage");
@@ -42,6 +29,34 @@ const TimeTableBlock = () => {
         setUploadedFile(file);
       }
     }
+
+    if (type === "pdf") {
+      const pdfData = localStorage.getItem("timetablePDF");
+      if (pdfData) {
+        const file = dataURLtoFile(pdfData, "saved-timetable.pdf");
+        setUploadedFile(file);
+      }
+    }
+
+    const candidates = [
+      "/table table.jpg",
+      "/table table.jpeg",
+      "/table table.png",
+      "/table table.pdf",
+    ];
+    (async () => {
+      for (const url of candidates) {
+        try {
+          const res = await fetch(url, { method: "HEAD" });
+          if (res.ok) {
+            setDefaultSrc(url);
+            break;
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+    })();
   }, []);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,32 +66,22 @@ const TimeTableBlock = () => {
     const reader = new FileReader();
     reader.onload = () => {
       const base64 = reader.result as string;
-      if (file.type === "text/csv" || file.name.endsWith(".csv")) {
-        Papa.parse(file, {
-          complete: (result) => {
-            setUploadedFile(file);
-            setCsvData(result.data as string[][]);
-
-            localStorage.setItem("timetableType", "csv");
-            localStorage.setItem("timetableCSV", JSON.stringify(result.data));
-          },
-          error: (error) => {
-            console.error("Error parsing CSV:", error);
-          },
-        });
-      } else if (file.type.startsWith("image/")) {
+      if (file.type.startsWith("image")) {
         setUploadedFile(file);
-        setCsvData(null);
 
         localStorage.setItem("timetableType", "image");
         localStorage.setItem("timetableImage", base64);
+      } else if (file.type === "application/pdf" || file.name.endsWith(".pdf")) {
+        setUploadedFile(file);
+        localStorage.setItem("timetableType", "pdf");
+        localStorage.setItem("timetablePDF", base64);
       }
     };
 
     if (file.type.startsWith("image/")) {
       reader.readAsDataURL(file);
-    } else if (file.type === "text/csv") {
-      reader.readAsText(file);
+    } else if (file.type === "application/pdf") {
+      reader.readAsDataURL(file);
     }
   };
 
@@ -102,13 +107,13 @@ const TimeTableBlock = () => {
           {/* Upload Button with Icon */}
           <div className="flex items-center space-x-2 z-20 mr-2">
             {/* Upload Button */}
-            {!uploadedFile && !csvData && (
+            {!uploadedFile && (
               <label className="flex items-center border border-[var(--text)] space-x-1 px-2 py-1 text-[var(--text)] rounded-lg cursor-pointer text-sm">
                 <DocumentUpload size={18} color="black" variant="Bold" />
                 <span>Upload</span>
                 <input
                   type="file"
-                  accept=".csv,image/*"
+                  accept="image/*,application/pdf"
                   onChange={handleFileUpload}
                   className="hidden"
                 />
@@ -116,13 +121,12 @@ const TimeTableBlock = () => {
             )}
 
             {/* Remove Button */}
-            {(uploadedFile || csvData) && (
+            {uploadedFile && (
               <button
                 onClick={() => {
                   setUploadedFile(null);
-                  setCsvData(null);
-                  localStorage.removeItem("timetableCSV");
                   localStorage.removeItem("timetableImage");
+                  localStorage.removeItem("timetablePDF");
                   localStorage.removeItem("timetableType");
                 }}
                 className="flex items-center border border-[var(--text)] space-x-1 px-2 py-1 text-[var(--text)] rounded-lg text-sm"
@@ -137,8 +141,8 @@ const TimeTableBlock = () => {
         {/* Content */}
         <div
           className="flex-1 overflow-y-auto rounded-xl min-h-0 justify-center items-center flex px-2 py-1"
-          onClick={uploadedFile || csvData ? toggleExpand : undefined}
-          style={{ cursor: uploadedFile || csvData ? "pointer" : "default" }}
+          onClick={uploadedFile || defaultSrc ? toggleExpand : undefined}
+          style={{ cursor: uploadedFile || defaultSrc ? "pointer" : "default" }}
         >
           {uploadedFile?.type.startsWith("image/") && (
             <img
@@ -148,64 +152,66 @@ const TimeTableBlock = () => {
             />
           )}
 
-          {csvData && (
-            <table className="text-sm border bg-white max-w-full">
-              <tbody>
-                {csvData.map((row, i) => (
-                  <tr key={i}>
-                    {row.map((cell, j) => (
-                      <td
-                        key={j}
-                        className="border px-2 py-1 whitespace-nowrap"
-                      >
-                        {cell}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {uploadedFile && uploadedFile.type === "application/pdf" && (
+            <div className="w-full h-full flex items-center justify-center">
+              <embed
+                src={URL.createObjectURL(uploadedFile)}
+                type="application/pdf"
+                className="w-full h-full rounded"
+              />
+            </div>
           )}
 
-          {!uploadedFile && !csvData && (
-            <TimeTableSlider
-              currentDay={currentDay}
-              onPrevDay={prevDay}
-              onNextDay={nextDay}
-            />
+          {!uploadedFile && defaultSrc && defaultSrc.endsWith(".pdf") && (
+            <div className="w-full h-full flex items-center justify-center">
+              <embed src={defaultSrc} type="application/pdf" className="w-full h-full rounded" />
+            </div>
+          )}
+
+          {!uploadedFile && defaultSrc && !defaultSrc.endsWith(".pdf") && (
+            <img src={defaultSrc} alt="Default timetable" className="max-h-full object-contain" />
+          )}
+
+          {!uploadedFile && !defaultSrc && (
+            <div className="text-sm text-[var(--text)] opacity-70">Upload a timetable image or PDF</div>
           )}
         </div>
       </div>
 
       {/* Fullscreen Modal Preview */}
-      {isExpanded && (uploadedFile || csvData) && (
+      {isExpanded && (uploadedFile || defaultSrc) && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
           onClick={toggleExpand}
         >
-          <div className="bg-white rounded-lg p-4 max-h-[90vh] overflow-auto">
+          {/* Close button */}
+          <button
+            aria-label="Close"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded(false);
+            }}
+            className="absolute top-4 right-4 text-white text-2xl leading-none"
+          >
+            ×
+          </button>
+
+          {/* Content */}
+          <div className="w-full h-full flex items-center justify-center p-4" onClick={(e) => e.stopPropagation()}>
             {uploadedFile?.type.startsWith("image/") && (
-              <img
-                src={URL.createObjectURL(uploadedFile)}
-                alt="Full timetable"
-                className="max-h-[80vh] max-w-full"
-              />
+              <img src={URL.createObjectURL(uploadedFile)} alt="Full timetable" className="max-h-full max-w-full object-contain" />
             )}
 
-            {csvData && (
-              <table className="text-sm border bg-white">
-                <tbody>
-                  {csvData.map((row, i) => (
-                    <tr key={i}>
-                      {row.map((cell, j) => (
-                        <td key={j} className="border px-2 py-1">
-                          {cell}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            {uploadedFile && uploadedFile.type === "application/pdf" && (
+              <embed src={URL.createObjectURL(uploadedFile)} type="application/pdf" className="w-full h-full" />
+            )}
+
+            {!uploadedFile && defaultSrc && !defaultSrc.endsWith(".pdf") && (
+              <img src={defaultSrc} alt="Full timetable" className="max-h-full max-w-full object-contain" />
+            )}
+
+            {!uploadedFile && defaultSrc && defaultSrc.endsWith(".pdf") && (
+              <embed src={defaultSrc} type="application/pdf" className="w-full h-full" />
             )}
           </div>
         </div>
