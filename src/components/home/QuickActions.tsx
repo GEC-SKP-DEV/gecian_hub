@@ -1,80 +1,21 @@
 "use client";
 import React from "react";
 import { QuickActionButton } from "../QuickActionButton";
+import { quickActions } from "@/data/home/quickActions";
 
 export const QuickActions = () => {
-  const quickActionItems = [
-    {
-      text: "College Login",
-      onClick: () =>
-        window.open(
-          "https://gecskp.etlab.in/user/login",
-          "_blank",
-          "noopener,noreferrer",
-        ),
-    },
-    {
-      text: "Bus Time",
-      onClick: () => (window.location.href = "/bus"),
-    },
-    {
-      text: "Lost & Found",
-      onClick: () => (window.location.href = "/lost"),
-    },
-    {
-      text: "SGPA Calculator",
-      onClick: () =>
-        window.open("https://ktugpa.web.app/", "_blank", "noopener,noreferrer"),
-    },
-    {
-      text: "Hackathon",
-      onClick: () =>
-        window.open(
-          "https://devpost.com/hackathons",
-          "_blank",
-          "noopener,noreferrer",
-        ),
-    },
-    {
-      text: "College Map",
-      onClick: () => (window.location.href = "/floor"),
-
-    },
-    {
-      text: "Project Collobaration",
-      onClick: () => alert("Project Collobaration feature coming soon!"),
-    },
-    {
-      text: "Club",
-      onClick: () => (window.location.href = "/club"),
-    },
-    {
-      text: "Anonymous Complaint",
-      onClick: () => (window.location.href = "/complaint"),
-    },
-    {
-      text: "Private Hostel",
-      onClick: () => alert("Private Hostel information coming soon!"),
-    },
-    {
-      text: "Repeto",
-      onClick: () =>
-        window.open(
-          "https://codecompasss.github.io/repeto/",
-          "_blank",
-          "noopener,noreferrer",
-        ),
-    },
-    {
-      text: "Project Showcase",
-      onClick: () =>
-        window.open(
-          "https://codecompasss.github.io/project_archive/",
-          "_blank",
-          "noopener,noreferrer",
-        ),
-    },
-  ];
+  const quickActionItems = quickActions.map((qa) => {
+    if (qa.type === "external") {
+      return {
+        text: qa.text,
+        onClick: () => (window.location.href = qa.url),
+      };
+    }
+    if (qa.type === "route") {
+      return { text: qa.text, onClick: () => (window.location.href = qa.path) };
+    }
+    return { text: qa.text, onClick: () => alert(qa.message) };
+  });
 
   return (
     <div
