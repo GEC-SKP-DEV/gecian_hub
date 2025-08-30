@@ -7,17 +7,14 @@ import {
   startOfMonth,
   endOfMonth,
   format,
-  isToday,
   isFuture,
   parseISO,
   addMonths,
   subMonths,
-  isWeekend,
 } from "date-fns";
 import {
   getAttendanceStatus,
-  markAttendance,
-  unmarkAttendance,
+  setAttendanceStatus,
   getSubjects,
 } from "@/lib/idb";
 import toast from "react-hot-toast";
@@ -34,7 +31,7 @@ export default function SubjectCalendarPage() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedDayStatus, setSelectedDayStatus] = useState<
-    "present" | "absent" | "loading" | null
+    "present" | "absent" | "duty" | "loading" | null
   >(null);
 
   useEffect(() => {
@@ -64,32 +61,21 @@ export default function SubjectCalendarPage() {
   const firstDayOfWeek = startOfMonth(currentMonth).getDay(); // 0=Sunday, 6=Saturday
 
   const handleDayClick = async (day: Date) => {
-    if (
-      isFuture(day) ||
-      isWeekend(day) ||
-      day < new Date(subject.createdAt) ||
-      !isToday(day)
-    )
-      return;
+    if (isFuture(day)) return;
     const dateStr = format(day, "yyyy-MM-dd");
     setSelectedDate(dateStr);
     setSelectedDayStatus("loading");
     const status = await getAttendanceStatus(subject.id, dateStr);
-    setSelectedDayStatus(status === "present" ? "present" : "absent");
+    setSelectedDayStatus(status as "present" | "absent" | "duty");
   };
 
-  const handleMarkPresent = async () => {
+  const setStatus = async (status: "present" | "absent" | "duty") => {
     if (!selectedDate) return;
-    await markAttendance(subject.id, selectedDate);
-    toast.success("Marked present!");
-    setSelectedDayStatus("present");
-  };
-
-  const handleMarkAbsent = async () => {
-    if (!selectedDate) return;
-    await unmarkAttendance(subject.id, selectedDate);
-    toast.success("Changed to absent/undone!");
-    setSelectedDayStatus("absent");
+    await setAttendanceStatus(subject.id, selectedDate, status);
+    toast.success(
+      status === "present" ? "Marked present!" : status === "duty" ? "Marked duty leave!" : "Marked absent!"
+    );
+    setSelectedDayStatus(status);
   };
 
   const prevMonth = () => {
@@ -105,8 +91,8 @@ export default function SubjectCalendarPage() {
 
   // Get day status
   const DayButton = ({ day }: { day: Date }) => {
-    const [status, setStatus] = useState<
-      "present" | "absent" | "future" | "today" | "weekend"
+    const [status, setStatusState] = useState<
+      "present" | "absent" | "duty" | "future"
     >("absent");
     const [loading, setLoading] = useState(true);
     const dateStr = format(day, "yyyy-MM-dd");
@@ -115,21 +101,13 @@ export default function SubjectCalendarPage() {
       
       const fetchStatus = async () => {
         setLoading(true);
-        if (isWeekend(day)) {
-          setStatus("weekend");
-          setLoading(false);
-          return;
-        }
         if (isFuture(day)) {
-          setStatus("future");
+          setStatusState("future");
           setLoading(false);
           return;
-        }
-        if (isToday(day)) {
-          setStatus("today");
         }
         const result = await getAttendanceStatus(subject.id, dateStr);
-        setStatus(result === "present" ? "present" : "absent");
+        setStatusState((result as any) === "duty" ? "duty" : (result === "present" ? "present" : "absent"));
         setLoading(false);
       };
       fetchStatus();
@@ -146,20 +124,16 @@ export default function SubjectCalendarPage() {
         : "bg-green-100 border-green-400";
     else if (status === "absent")
       bg = isSelected ? "bg-red-500 text-white" : "bg-red-100 border-red-300";
+    else if (status === "duty")
+      bg = isSelected ? "bg-yellow-500 text-white" : "bg-yellow-100 border-yellow-300";
     else if (status === "future")
       bg = "bg-gray-100 text-gray-400 cursor-not-allowed";
-    else if (status === "weekend")
-      bg = "bg-gray-200 text-gray-400 cursor-not-allowed";
-    else if (status === "today")
-      bg = isSelected
-        ? "bg-blue-500 text-white"
-        : "border-blue-500 text-blue-600";
     else bg = "bg-white border-gray-300";
 
     return (
       <button
         onClick={() => handleDayClick(day)}
-        disabled={isFuture(day) || isWeekend(day)}
+        disabled={isFuture(day)}
         aria-pressed={isSelected}
         title={format(day, "eeee, MMMM do yyyy")}
         className={`aspect-square flex items-center justify-center rounded-full border  transition font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400 ${bg}`}
@@ -228,28 +202,17 @@ export default function SubjectCalendarPage() {
             ) : (
               <div className="mt-3 flex gap-3 items-center">
                 <button
-                  className={`px-4 py-2 rounded font-semibold transition ${
-                    selectedDayStatus === "present"
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-700 text-white hover:bg-green-500"
-                  }`}
-                  onClick={async () => {
-                    if (selectedDayStatus === "present") {
-                      await handleMarkAbsent();
-                    } else {
-                      await handleMarkPresent();
-                    }
-                  }}
-                  aria-label={
-                    selectedDayStatus === "present"
-                      ? "Mark as absent"
-                      : "Mark as present"
-                  }
-                >
-                  {selectedDayStatus === "present"
-                    ? "Undo / Mark Absent"
-                    : "Mark Present"}
-                </button>
+                  className={`px-4 py-2 rounded font-semibold transition ${selectedDayStatus === "present" ? "bg-green-500 text-white" : "bg-gray-700 text-white hover:bg-green-500"}`}
+                  onClick={() => setStatus("present")}
+                >Present</button>
+                <button
+                  className={`px-4 py-2 rounded font-semibold transition ${selectedDayStatus === "absent" ? "bg-red-500 text-white" : "bg-gray-700 text-white hover:bg-red-500"}`}
+                  onClick={() => setStatus("absent")}
+                >Absent</button>
+                <button
+                  className={`px-4 py-2 rounded font-semibold transition ${selectedDayStatus === "duty" ? "bg-yellow-500 text-white" : "bg-gray-700 text-white hover:bg-yellow-500"}`}
+                  onClick={() => setStatus("duty")}
+                >Duty</button>
               </div>
             )}
           </div>
@@ -264,12 +227,8 @@ export default function SubjectCalendarPage() {
             Absent
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-4 h-4 bg-blue-100 rounded-full border border-blue-400" />{" "}
-            Today
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 bg-gray-200 rounded-full border border-gray-300" />{" "}
-            Weekend
+            <div className="w-4 h-4 bg-yellow-100 rounded-full border border-yellow-400" />{" "}
+            Duty
           </div>
           <div className="flex items-center gap-1">
             <div className="w-4 h-4 bg-gray-100 rounded-full border border-gray-400" />{" "}

@@ -19,7 +19,7 @@ const BottomNavBar = () => {
     {
       name: "attendance",
       icon: Calendar2,
-      href: "/attendance",
+      href: "/attendance/calendar",
       label: "Attendance",
     },
     { name: "finance", icon: Money, href: "/expense", label: "Finance" },

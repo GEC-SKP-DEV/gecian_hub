@@ -6,6 +6,7 @@ export type QuickAction =
 export const quickActions: QuickAction[] = [
   { text: "College Login", type: "external", url: "https://gecskp.etlab.in/user/login" },
   { text: "Bus Time", type: "route", path: "/bus" },
+  { text: "Attendance", type: "route", path: "/attendance" },
   { text: "Lost & Found", type: "route", path: "/lost" },
   { text: "SGPA Calculator", type: "external", url: "https://ktugpa.web.app/" },
   { text: "Hackathon", type: "external", url: "https://devpost.com/hackathons" },

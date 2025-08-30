@@ -6,11 +6,10 @@ import toast from "react-hot-toast";
 import {
   addSubject,
   getSubjects,
-  markAttendance,
-  unmarkAttendance, // Make sure your lib/idb.ts has this
   getAttendanceStatus,
   getAttendanceStats,
   deleteSubject,
+  setAttendanceStatus,
 } from "@/lib/idb";
 
 // === AttendanceRing component ===
@@ -66,13 +65,13 @@ function AttendanceRing({ percent }: { percent: number }) {
 function SubjectCard({
   subject,
   onRequestDelete,
- 
+
 }: {
   subject: { id: string; name: string };
   onRequestDelete: (subject: { id: string; name: string }) => void;
   fetchSubjects: () => void;
 }) {
-  const [todayStatus, setTodayStatus] = useState<"present" | "absent" | "loading">("loading");
+  const [todayStatus, setTodayStatus] = useState<"present" | "absent" | "duty" | "loading">("loading");
   const [stats, setStats] = useState({ present: 0, total: 0, percent: 0 });
   const todayStr = new Date().toISOString().slice(0, 10); // yyyy-mm-dd
 
@@ -84,7 +83,7 @@ function SubjectCard({
 
   const fetchTodayStatus = async () => {
     const status = await getAttendanceStatus(subject.id, todayStr);
-    setTodayStatus(status === "present" ? "present" : "absent");
+    setTodayStatus((status as any) === "duty" ? "duty" : (status === "present" ? "present" : "absent"));
   };
 
   const fetchStats = async () => {
@@ -94,7 +93,7 @@ function SubjectCard({
 
   const handlePresent = async (e: any) => {
     e.stopPropagation();
-    await markAttendance(subject.id, todayStr);
+    await setAttendanceStatus(subject.id, todayStr, "present");
     toast.success(`Marked present for ${subject.name}`);
     fetchTodayStatus();
     fetchStats();
@@ -102,8 +101,16 @@ function SubjectCard({
 
   const handleAbsent = async (e: any) => {
     e.stopPropagation();
-    await unmarkAttendance(subject.id, todayStr);
+    await setAttendanceStatus(subject.id, todayStr, "absent");
     toast.success(`Marked absent/undone for ${subject.name}`);
+    fetchTodayStatus();
+    fetchStats();
+  };
+
+  const handleDuty = async (e: any) => {
+    e.stopPropagation();
+    await setAttendanceStatus(subject.id, todayStr, "duty");
+    toast.success(`Marked duty leave for ${subject.name}`);
     fetchTodayStatus();
     fetchStats();
   };
@@ -149,6 +156,15 @@ function SubjectCard({
           Absent
         </button>
         <button
+          onClick={handleDuty}
+          className={`px-3 py-1 rounded transition ${todayStatus === "duty"
+              ? "bg-yellow-500 text-white cursor-not-allowed opacity-70"
+              : "bg-gray-800 text-white hover:bg-gray-700"}`}
+          disabled={todayStatus === "duty"}
+        >
+          Duty
+        </button>
+        <button
           onClick={handleDeleteRequest}
           className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
         >
@@ -162,14 +178,24 @@ function SubjectCard({
 // === MAIN PAGE ===
 
 export default function Home() {
-  const [subjects, setSubjects] = useState<{ id: string; name: string }[]>([]);
+  const [subjects, setSubjects] = useState<{ id: string; name: string; todayStatus?: "present" | "absent" | "duty" }[]>([]);
   const [newSubject, setNewSubject] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [statusFilter, setStatusFilter] = useState<"all" | "present" | "absent" | "duty">("all");
+  const [query, setQuery] = useState("");
 
   const fetchSubjects = async () => {
     const list = await getSubjects();
-    setSubjects(list);
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const withStatus = await Promise.all(
+      list.map(async (s: { id: string; name: string }) => {
+        const st = await getAttendanceStatus(s.id, todayStr);
+        const mapped = (st as any) === "duty" ? "duty" : (st === "present" ? "present" : "absent");
+        return { ...s, todayStatus: mapped as "present"|"absent"|"duty" };
+      })
+    );
+    setSubjects(withStatus);
   };
 
   useEffect(() => {
@@ -197,11 +223,36 @@ export default function Home() {
     <main className="p-6 max-w-2xl mx-auto min-h-screen pb-24">
       <h1 className="text-3xl font-bold mb-8 text-center text-blue-800">Attendance Tracker</h1>
 
+      <div className="flex flex-wrap items-center gap-3 mb-5">
+        <select
+          className="border border-gray-300 rounded px-3 py-2"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as any)}
+          aria-label="Filter by status"
+        >
+          <option value="all">All</option>
+          <option value="present">Present</option>
+          <option value="absent">Absent</option>
+          <option value="duty">Duty</option>
+        </select>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search subjects"
+          className="flex-1 min-w-[160px] border border-gray-300 rounded px-3 py-2"
+          aria-label="Search subjects"
+        />
+      </div>
+
       <ul className="space-y-5">
         {subjects.length === 0 && (
           <li className="text-center text-gray-500">No subjects yet.</li>
         )}
-        {subjects.map((subj) => (
+        {subjects
+          .filter((s) => statusFilter === "all" ? true : s.todayStatus === statusFilter)
+          .filter((s) => s.name.toLowerCase().includes(query.toLowerCase()))
+          .map((subj) => (
           <SubjectCard
             key={subj.id}
             subject={subj}
@@ -212,7 +263,7 @@ export default function Home() {
       </ul>
 
       <button
-        className="fixed bottom-24 right-6 bg-blue-600 text-white text-3xl w-14 h-14 rounded-full shadow-lg hover:bg-blue-700 transition"
+        className="fixed bottom-24 left-6 bg-blue-600 text-white text-3xl w-14 h-14 rounded-full shadow-lg hover:bg-blue-700 transition"
         onClick={() => setModalOpen(true)}
         aria-label="Add Subject"
       >
