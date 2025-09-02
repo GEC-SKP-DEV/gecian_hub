@@ -27,7 +27,7 @@ useEffect(() => {
 
   return (
     <div className="min-h-screen">
-      <TopNavBar userName={userName} userPhotoURL={userPhotoURL}  />
+      {/* <TopNavBar userName={userName} userPhotoURL={userPhotoURL}  /> */}
       <div className="mx-auto max-w-[var(--max-screen-size)] pt-4">
         <main className="px-3 pb-24">
           <div className="md:flex lg:h-[calc(100vh-12rem)] md:gap-6 lg:gap-8">
