@@ -1,28 +1,28 @@
 "use client";
-import { useEffect, useState } from "react";
-import TopNavBar from "../topNavbar";
+// import { useEffect, useState } from "react";
+// import TopNavBar from "../topNavbar";
 import { QuickActions } from "./QuickActions";
 import TimeTableBlock from "./TimeTable";
-import { onAuthStateChanged } from "@/lib/firebase/auth"; // Update with correct path
-import { User } from "firebase/auth";
+// import { onAuthStateChanged } from "@/lib/firebase/auth"; // Update with correct path
+// import { User } from "firebase/auth";
 
 const ResponsiveDashboard = () => {
- const [userName, setUserName] = useState<string>("");
-const [userPhotoURL, setUserPhotoURL] = useState<string | null>(null);
+//  const [userName, setUserName] = useState<string>("");
+// const [userPhotoURL, setUserPhotoURL] = useState<string | null>(null);
 
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged((authUser: User | null) => {
-    if (authUser) {
-      setUserName(authUser.displayName || "Student");
-      setUserPhotoURL(authUser.photoURL || null);
-    } else {
-      setUserName("Guest");
-      setUserPhotoURL(null);
-    }
-  });
+// useEffect(() => {
+//   const unsubscribe = onAuthStateChanged((authUser: User | null) => {
+//     if (authUser) {
+//       setUserName(authUser.displayName || "Student");
+//       setUserPhotoURL(authUser.photoURL || null);
+//     } else {
+//       setUserName("Guest");
+//       setUserPhotoURL(null);
+//     }
+//   });
 
-  return () => unsubscribe();
-}, []);
+//   return () => unsubscribe();
+// }, []);
 
 
   return (

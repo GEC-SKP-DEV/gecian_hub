@@ -2,19 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
-import type { EventItem } from "@/data/events";
+import type { EventItem } from "@/types/event";
 
 export default function EventDetail({ event }: { event: EventItem }) {
   const router = useRouter();
 
   return (
     <div className="flex flex-col min-h-screen text-black bg-white">
-      {/* Header image */}
       <div className="relative w-full h-48 md:h-72 lg:h-96 border-b">
-        {/* Using regular img to avoid layout issues without explicit sizes */}
         <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
-
-        {/* Back Button */}
         <button
           onClick={() => router.push("/events")}
           className="absolute top-4 left-4 w-10 h-10 flex items-center justify-center rounded-full border border-gray-400 bg-white"
@@ -24,7 +20,6 @@ export default function EventDetail({ event }: { event: EventItem }) {
         </button>
       </div>
 
-      {/* Main content */}
       <div className="p-6 space-y-4">
         <h1 className="text-3xl font-bold">{event.title}</h1>
         <div className="text-gray-700 space-y-1">

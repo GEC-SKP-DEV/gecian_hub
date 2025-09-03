@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon, Filter } from "lucide-react";
 import EventCard from "./EventCard";
-import { eventsData, type EventItem } from "@/data/events";
+import type { EventItem } from "@/data/events"; // you can redefine EventItem interface if needed
 
 function isUpcoming(event: EventItem, nowISO: string) {
   return new Date(event.date).getTime() >= new Date(nowISO).setHours(0, 0, 0, 0);
@@ -14,13 +14,29 @@ export default function EventList() {
   const router = useRouter();
   const [filterOpen, setFilterOpen] = useState(false);
   const [filter, setFilter] = useState<"all" | "upcoming">("all");
+  const [events, setEvents] = useState<EventItem[]>([]);
 
   const nowISO = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
+  // Fetch events from API
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch("/api/events");
+        if (!res.ok) throw new Error("Failed to fetch events");
+        const data = await res.json();
+        setEvents(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchEvents();
+  }, []);
+
   const filteredEvents = useMemo(() => {
-    if (filter === "upcoming") return eventsData.filter((e) => isUpcoming(e, nowISO));
-    return eventsData;
-  }, [filter, nowISO]);
+    if (filter === "upcoming") return events.filter((e) => isUpcoming(e, nowISO));
+    return events;
+  }, [filter, nowISO, events]);
 
   return (
     <div className="p-4 min-h-screen text-white">
