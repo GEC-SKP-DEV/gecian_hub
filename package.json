@@ -19,6 +19,7 @@
     "date-fns": "^4.1.0",
     "firebase": "^11.9.1",
     "firebase-admin": "^13.4.0",
+    "framer-motion": "^12.23.13",
     "iconsax-react": "^0.0.8",
     "idb": "^8.0.3",
     "lucide-react": "^0.475.0",

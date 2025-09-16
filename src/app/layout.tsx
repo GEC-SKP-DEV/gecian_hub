@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import type { Metadata } from "next";
 import { Viewport } from "next";
 import { JsonLd } from "@/components/seo/JsonLd";
+import TopNavbar from '@/components/topNavbar';
 
 export const metadata: Metadata = {
   title: "Gecian Hub",
@@ -116,6 +117,7 @@ export default function RootLayout({
             ],
           }}
         />
+        <TopNavbar />
         {children}
         <Toaster
           position="bottom-right"
