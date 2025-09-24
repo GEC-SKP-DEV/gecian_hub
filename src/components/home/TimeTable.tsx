@@ -145,11 +145,20 @@ const TimeTableBlock = () => {
           style={{ cursor: uploadedFile || defaultSrc ? "pointer" : "default" }}
         >
           {uploadedFile?.type.startsWith("image/") && (
-            <img
-              src={URL.createObjectURL(uploadedFile)}
-              alt="Uploaded timetable"
-              className="max-h-full object-contain"
-            />
+            <div className="w-full h-full flex items-center justify-center overflow-hidden">
+              <img
+                src={URL.createObjectURL(uploadedFile)}
+                alt="Uploaded timetable"
+                className="w-full h-full object-cover"
+                style={{
+                  objectFit: 'cover',
+                  width: '100%',
+                  height: '100%',
+                  minWidth: '100%',
+                  minHeight: '100%'
+                }}
+              />
+            </div>
           )}
 
           {uploadedFile && uploadedFile.type === "application/pdf" && (
@@ -169,7 +178,20 @@ const TimeTableBlock = () => {
           )}
 
           {!uploadedFile && defaultSrc && !defaultSrc.endsWith(".pdf") && (
-            <img src={defaultSrc} alt="Default timetable" className="max-h-full object-contain" />
+            <div className="w-full h-full flex items-center justify-center overflow-hidden">
+              <img 
+                src={defaultSrc} 
+                alt="Default timetable" 
+                className="w-full h-full object-cover"
+                style={{
+                  objectFit: 'cover',
+                  width: '100%',
+                  height: '100%',
+                  minWidth: '100%',
+                  minHeight: '100%'
+                }}
+              />
+            </div>
           )}
 
           {!uploadedFile && !defaultSrc && (
@@ -199,7 +221,20 @@ const TimeTableBlock = () => {
           {/* Content */}
           <div className="w-full h-full flex items-center justify-center p-4" onClick={(e) => e.stopPropagation()}>
             {uploadedFile?.type.startsWith("image/") && (
-              <img src={URL.createObjectURL(uploadedFile)} alt="Full timetable" className="max-h-full max-w-full object-contain" />
+              <div className="w-full h-full flex items-center justify-center overflow-hidden">
+                <img 
+                  src={URL.createObjectURL(uploadedFile)} 
+                  alt="Full timetable" 
+                  className="w-full h-full object-cover"
+                  style={{
+                    objectFit: 'cover',
+                    width: '100%',
+                    height: '100%',
+                    minWidth: '100%',
+                    minHeight: '100%'
+                  }}
+                />
+              </div>
             )}
 
             {uploadedFile && uploadedFile.type === "application/pdf" && (
@@ -207,7 +242,20 @@ const TimeTableBlock = () => {
             )}
 
             {!uploadedFile && defaultSrc && !defaultSrc.endsWith(".pdf") && (
-              <img src={defaultSrc} alt="Full timetable" className="max-h-full max-w-full object-contain" />
+              <div className="w-full h-full flex items-center justify-center overflow-hidden">
+                <img 
+                  src={defaultSrc} 
+                  alt="Full timetable" 
+                  className="w-full h-full object-cover"
+                  style={{
+                    objectFit: 'cover',
+                    width: '100%',
+                    height: '100%',
+                    minWidth: '100%',
+                    minHeight: '100%'
+                  }}
+                />
+              </div>
             )}
 
             {!uploadedFile && defaultSrc && defaultSrc.endsWith(".pdf") && (
