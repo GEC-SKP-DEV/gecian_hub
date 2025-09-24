@@ -15,6 +15,8 @@ import {
   getSubjects,
   getAttendanceStatus,
   setAttendanceStatus,
+  addSubject,
+  deleteSubject,
 } from "@/lib/sc";
 import toast from "react-hot-toast";
 
@@ -39,6 +41,9 @@ export default function AttendanceCalendarAllSubjects() {
     Record<string, Status | "none">
   >({});
   const [calendarFilter, setCalendarFilter] = useState<"all" | Status>("all");
+  const [isAddSubjectOpen, setIsAddSubjectOpen] = useState(false);
+  const [newSubjectName, setNewSubjectName] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
 
   const days = useMemo(
     () =>
@@ -58,9 +63,14 @@ export default function AttendanceCalendarAllSubjects() {
 
   const computeSummaryFromStatuses = (statuses: Status[]): Status | "none" => {
     if (statuses.length === 0) return "none";
+    // Only consider present status if there are no absences or duties
+    if (statuses.every(s => s === "present")) return "present";
+    // If any subject is marked as absent, show as absent
     if (statuses.includes("absent")) return "absent";
+    // If any subject is on duty, show as duty
     if (statuses.includes("duty")) return "duty";
-    return "present";
+    // Default to present if there are any statuses but none of the above
+    return statuses.length > 0 ? "present" : "none";
   };
 
   // Compute month summaries for all visible days
@@ -80,16 +90,15 @@ export default function AttendanceCalendarAllSubjects() {
         const entries = await Promise.all(
           subjects.map(async (s) => {
             const st = await getAttendanceStatus(s.id, dateStr);
-            const mapped: Status =
-              (st as any) === "duty"
-                ? "duty"
-                : st === "present"
-                ? "present"
-                : "absent";
-            return mapped;
+            // Only include defined statuses (not 'none')
+            return st === "present" || st === "absent" || st === "duty" ? st : null;
           })
         );
-        result[dateStr] = computeSummaryFromStatuses(entries);
+        // Filter out null values before computing summary
+        const validEntries = entries.filter((e): e is Status => e !== null);
+        result[dateStr] = validEntries.length > 0 
+          ? computeSummaryFromStatuses(validEntries) 
+          : "none";
       }
       setMonthSummaries(result);
     };
@@ -102,17 +111,22 @@ export default function AttendanceCalendarAllSubjects() {
     const entries = await Promise.all(
       subjects.map(async (s) => {
         const st = await getAttendanceStatus(s.id, dateStr);
-        const mapped: Status =
-          (st as any) === "duty"
-            ? "duty"
-            : st === "present"
-            ? "present"
-            : "absent";
+        // Only map to status if it's not "none"
+        const mapped: Status | null = 
+          st === "duty" ? "duty" :
+          st === "present" ? "present" :
+          st === "absent" ? "absent" : 
+          null;
         return [s.id, mapped] as const;
       })
     );
+    // Only set status for subjects that have a defined status
     const rec: Record<string, Status> = {};
-    for (const [id, st] of entries) rec[id] = st;
+    for (const [id, st] of entries) {
+      if (st !== null) {
+        rec[id] = st;
+      }
+    }
     setPerSubjectStatus(rec);
     setDayLoading(false);
   };
@@ -132,6 +146,33 @@ export default function AttendanceCalendarAllSubjects() {
     const dateStr = format(day, "yyyy-MM-dd");
     setSelectedDate(dateStr);
     setModalOpen(true);
+  };
+
+  const handleAddSubject = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSubjectName.trim()) return;
+    
+    try {
+      // Add the new subject
+      await addSubject(newSubjectName);
+      
+      // Reload subjects to get the new subject with its ID
+      const updatedSubjects = await getSubjects();
+      setSubjects(updatedSubjects);
+      
+      // Just show success message and close the modal
+      toast.success('Subject added successfully!');
+      setNewSubjectName('');
+      setIsAddSubjectOpen(false);
+      
+      // Refresh the current view to show the new subject
+      if (selectedDate) {
+        await loadStatusesForSelectedDate(selectedDate);
+      }
+    } catch (error) {
+      toast.error('Failed to add subject. Please try again.');
+      console.error('Error adding subject:', error);
+    }
   };
 
   const setStatusForSubject = async (
@@ -157,9 +198,41 @@ export default function AttendanceCalendarAllSubjects() {
     );
   };
 
+  const handleDeleteSubject = async (subjectId: string) => {
+    if (!window.confirm('Are you sure you want to delete this subject? This action cannot be undone.')) {
+      return;
+    }
+    
+    try {
+      await deleteSubject(subjectId);
+      // Update the subjects list
+      const updatedSubjects = await getSubjects();
+      setSubjects(updatedSubjects);
+      
+      // If the deleted subject was selected, clear the selection
+      if (selectedSubject === subjectId) {
+        setSelectedSubject(updatedSubjects[0]?.id || null);
+      }
+      
+      toast.success('Subject deleted successfully');
+    } catch (error) {
+      toast.error('Failed to delete subject');
+      console.error('Error deleting subject:', error);
+    }
+  };
+
   return (
     <main className="p-4 max-w-2xl mx-auto pb-28">
-      <h1 className="text-2xl font-bold text-center mb-4">Attendance</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Attendance</h1>
+        <button
+          onClick={() => setIsAddSubjectOpen(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center gap-2"
+        >
+          <span>+</span>
+          <span>Add Subject</span>
+        </button>
+      </div>
 
       <section className="rounded-xl bg-white shadow p-4 mb-5">
         <header className="flex justify-between items-center mb-3">
@@ -278,6 +351,60 @@ export default function AttendanceCalendarAllSubjects() {
         </div>
       </section>
 
+      {/* Add Subject Modal */}
+      {isAddSubjectOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Add New Subject</h2>
+              <button 
+                onClick={() => {
+                  setIsAddSubjectOpen(false);
+                  setNewSubjectName('');
+                }}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            <form onSubmit={handleAddSubject}>
+              <div className="mb-4">
+                <label htmlFor="subject-name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Subject Name
+                </label>
+                <input
+                  type="text"
+                  id="subject-name"
+                  value={newSubjectName}
+                  onChange={(e) => setNewSubjectName(e.target.value)}
+                  className="w-full p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter subject name"
+                  required
+                  autoFocus
+                />
+              </div>
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAddSubjectOpen(false);
+                    setNewSubjectName('');
+                  }}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Add Subject
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40">
           <div className="bg-white w-full sm:max-w-xl sm:rounded-lg sm:shadow-xl p-4 max-h-[85vh] overflow-auto">
@@ -349,7 +476,7 @@ export default function AttendanceCalendarAllSubjects() {
                           </span>
                         )}
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 items-center">
                         <button
                           onClick={() =>
                             setStatusForSubject(s.id, "present", selectedDate)
@@ -388,6 +515,18 @@ export default function AttendanceCalendarAllSubjects() {
                           disabled={st === "duty"}
                         >
                           Duty
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteSubject(s.id);
+                          }}
+                          className="p-1 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                          title="Delete subject"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
                         </button>
                       </div>
                     </li>
