@@ -19,7 +19,7 @@ import {
   getAllSubjects,
   markAttendance,
   getAttendanceStatus,
-} from "@/lib/idb";
+} from "@/lib/sc";
 import toast from "react-hot-toast";
 
 export default function CommonCalendar() {
@@ -203,9 +203,7 @@ export default function CommonCalendar() {
       >
         {day.getDate()}
         {isToday(day) && (
-          <div className="text-xs mt-1">
-            {status === "present" ? "✓" : ""}
-          </div>
+          <div className="text-xs mt-1">{status === "present" ? "✓" : ""}</div>
         )}
       </button>
     );

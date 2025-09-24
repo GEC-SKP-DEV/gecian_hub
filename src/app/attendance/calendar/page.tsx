@@ -15,7 +15,7 @@ import {
   getSubjects,
   getAttendanceStatus,
   setAttendanceStatus,
-} from "@/lib/idb";
+} from "@/lib/sc";
 import toast from "react-hot-toast";
 
 export const runtime = "edge";
@@ -31,9 +31,13 @@ export default function AttendanceCalendarAllSubjects() {
   const [statusFilter, setStatusFilter] = useState<"all" | Status>("all");
   const [query, setQuery] = useState("");
   const [dayLoading, setDayLoading] = useState(false);
-  const [perSubjectStatus, setPerSubjectStatus] = useState<Record<string, Status>>({});
+  const [perSubjectStatus, setPerSubjectStatus] = useState<
+    Record<string, Status>
+  >({});
   const [modalOpen, setModalOpen] = useState(false);
-  const [monthSummaries, setMonthSummaries] = useState<Record<string, Status | "none">>({});
+  const [monthSummaries, setMonthSummaries] = useState<
+    Record<string, Status | "none">
+  >({});
   const [calendarFilter, setCalendarFilter] = useState<"all" | Status>("all");
 
   const days = useMemo(
@@ -76,7 +80,12 @@ export default function AttendanceCalendarAllSubjects() {
         const entries = await Promise.all(
           subjects.map(async (s) => {
             const st = await getAttendanceStatus(s.id, dateStr);
-            const mapped: Status = (st as any) === "duty" ? "duty" : st === "present" ? "present" : "absent";
+            const mapped: Status =
+              (st as any) === "duty"
+                ? "duty"
+                : st === "present"
+                ? "present"
+                : "absent";
             return mapped;
           })
         );
@@ -93,7 +102,12 @@ export default function AttendanceCalendarAllSubjects() {
     const entries = await Promise.all(
       subjects.map(async (s) => {
         const st = await getAttendanceStatus(s.id, dateStr);
-        const mapped: Status = (st as any) === "duty" ? "duty" : st === "present" ? "present" : "absent";
+        const mapped: Status =
+          (st as any) === "duty"
+            ? "duty"
+            : st === "present"
+            ? "present"
+            : "absent";
         return [s.id, mapped] as const;
       })
     );
@@ -155,7 +169,9 @@ export default function AttendanceCalendarAllSubjects() {
           >
             Prev
           </button>
-          <h2 className="text-lg font-semibold">{format(currentMonth, "MMMM yyyy")}</h2>
+          <h2 className="text-lg font-semibold">
+            {format(currentMonth, "MMMM yyyy")}
+          </h2>
           <div className="flex items-center gap-2">
             <label className="text-sm text-gray-600">Show</label>
             <select
@@ -199,16 +215,24 @@ export default function AttendanceCalendarAllSubjects() {
                 const isSelected = selectedDate === dateStr;
                 let bg = "bg-white border-gray-300";
                 if (summary === "present")
-                  bg = isSelected ? "bg-green-500 text-white" : "bg-green-100 border-green-400";
+                  bg = isSelected
+                    ? "bg-green-500 text-white"
+                    : "bg-green-100 border-green-400";
                 else if (summary === "absent")
-                  bg = isSelected ? "bg-red-500 text-white" : "bg-red-100 border-red-300";
+                  bg = isSelected
+                    ? "bg-red-500 text-white"
+                    : "bg-red-100 border-red-300";
                 else if (summary === "duty")
-                  bg = isSelected ? "bg-yellow-500 text-white" : "bg-yellow-100 border-yellow-300";
+                  bg = isSelected
+                    ? "bg-yellow-500 text-white"
+                    : "bg-yellow-100 border-yellow-300";
                 else if (isFuture(day))
                   bg = "bg-gray-100 text-gray-400 cursor-not-allowed";
 
                 const filteredOut =
-                  calendarFilter !== "all" && summary !== calendarFilter && !isFuture(day);
+                  calendarFilter !== "all" &&
+                  summary !== calendarFilter &&
+                  !isFuture(day);
 
                 return (
                   <button
@@ -217,8 +241,14 @@ export default function AttendanceCalendarAllSubjects() {
                     disabled={isFuture(day)}
                     aria-pressed={isSelected}
                     title={format(day, "eeee, MMMM do yyyy")}
-                    className={`aspect-square flex items-center justify-center rounded-full border transition font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400 ${bg} ${filteredOut ? "opacity-30" : ""}`}
-                    style={{ minWidth: 36, minHeight: 36, transition: "all 0.15s" }}
+                    className={`aspect-square flex items-center justify-center rounded-full border transition font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400 ${bg} ${
+                      filteredOut ? "opacity-30" : ""
+                    }`}
+                    style={{
+                      minWidth: 36,
+                      minHeight: 36,
+                      transition: "all 0.15s",
+                    }}
                   >
                     {day.getDate()}
                   </button>
@@ -230,16 +260,20 @@ export default function AttendanceCalendarAllSubjects() {
 
         <div className="flex flex-wrap gap-3 mt-4 justify-center text-xs font-medium text-gray-700 select-none">
           <div className="flex items-center gap-1">
-            <div className="w-4 h-4 bg-green-100 rounded-full border border-green-400" /> Present
+            <div className="w-4 h-4 bg-green-100 rounded-full border border-green-400" />{" "}
+            Present
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-4 h-4 bg-red-100 rounded-full border border-red-400" /> Absent
+            <div className="w-4 h-4 bg-red-100 rounded-full border border-red-400" />{" "}
+            Absent
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-4 h-4 bg-yellow-100 rounded-full border border-yellow-400" /> Duty
+            <div className="w-4 h-4 bg-yellow-100 rounded-full border border-yellow-400" />{" "}
+            Duty
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-4 h-4 bg-gray-100 rounded-full border border-gray-400" /> Future
+            <div className="w-4 h-4 bg-gray-100 rounded-full border border-gray-400" />{" "}
+            Future
           </div>
         </div>
       </section>
@@ -250,7 +284,8 @@ export default function AttendanceCalendarAllSubjects() {
             <header className="flex items-center justify-between gap-3 mb-3">
               <div className="flex items-center gap-3">
                 <span className="text-sm text-gray-600">
-                  {format(parseISO(selectedDate), "PPP")} {dayLoading && " • loading..."}
+                  {format(parseISO(selectedDate), "PPP")}{" "}
+                  {dayLoading && " • loading..."}
                 </span>
                 <select
                   className="border border-gray-300 rounded px-2 py-1 text-sm"
@@ -276,17 +311,28 @@ export default function AttendanceCalendarAllSubjects() {
                 onClick={() => setModalOpen(false)}
                 className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-800"
                 aria-label="Close"
-              >Close</button>
+              >
+                Close
+              </button>
             </header>
 
             <ul className="divide-y">
               {subjects
-                .filter((s) => (statusFilter === "all" ? true : perSubjectStatus[s.id] === statusFilter))
-                .filter((s) => s.name.toLowerCase().includes(query.toLowerCase()))
+                .filter((s) =>
+                  statusFilter === "all"
+                    ? true
+                    : perSubjectStatus[s.id] === statusFilter
+                )
+                .filter((s) =>
+                  s.name.toLowerCase().includes(query.toLowerCase())
+                )
                 .map((s) => {
                   const st = perSubjectStatus[s.id];
                   return (
-                    <li key={s.id} className="py-3 flex items-center justify-between gap-3">
+                    <li
+                      key={s.id}
+                      className="py-3 flex items-center justify-between gap-3"
+                    >
                       <div className="flex items-center gap-3">
                         <span className="text-base font-medium">{s.name}</span>
                         {st && (
@@ -305,27 +351,39 @@ export default function AttendanceCalendarAllSubjects() {
                       </div>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => setStatusForSubject(s.id, "present", selectedDate)}
+                          onClick={() =>
+                            setStatusForSubject(s.id, "present", selectedDate)
+                          }
                           className={`px-3 py-1 rounded transition ${
-                            st === "present" ? "bg-green-500 text-white" : "bg-gray-800 text-white hover:bg-gray-700"
+                            st === "present"
+                              ? "bg-green-500 text-white"
+                              : "bg-gray-800 text-white hover:bg-gray-700"
                           }`}
                           disabled={st === "present"}
                         >
                           Present
                         </button>
                         <button
-                          onClick={() => setStatusForSubject(s.id, "absent", selectedDate)}
+                          onClick={() =>
+                            setStatusForSubject(s.id, "absent", selectedDate)
+                          }
                           className={`px-3 py-1 rounded transition ${
-                            st === "absent" ? "bg-red-500 text-white" : "bg-gray-800 text-white hover:bg-gray-700"
+                            st === "absent"
+                              ? "bg-red-500 text-white"
+                              : "bg-gray-800 text-white hover:bg-gray-700"
                           }`}
                           disabled={st === "absent"}
                         >
                           Absent
                         </button>
                         <button
-                          onClick={() => setStatusForSubject(s.id, "duty", selectedDate)}
+                          onClick={() =>
+                            setStatusForSubject(s.id, "duty", selectedDate)
+                          }
                           className={`px-3 py-1 rounded transition ${
-                            st === "duty" ? "bg-yellow-500 text-white" : "bg-gray-800 text-white hover:bg-gray-700"
+                            st === "duty"
+                              ? "bg-yellow-500 text-white"
+                              : "bg-gray-800 text-white hover:bg-gray-700"
                           }`}
                           disabled={st === "duty"}
                         >
@@ -336,7 +394,9 @@ export default function AttendanceCalendarAllSubjects() {
                   );
                 })}
               {subjects.length === 0 && (
-                <li className="py-6 text-center text-gray-500">No subjects yet.</li>
+                <li className="py-6 text-center text-gray-500">
+                  No subjects yet.
+                </li>
               )}
             </ul>
           </div>
