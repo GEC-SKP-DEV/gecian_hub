@@ -14,8 +14,8 @@ const Header: React.FC<{
   semester?: number | null;
   department?: string | null;
   userPhotoURL?: string | null;
-// }> = ({ userName, semester, department, userPhotoURL }) => {
-}> = ({ }) => {
+  // }> = ({ userName, semester, department, userPhotoURL }) => {
+}> = ({}) => {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 

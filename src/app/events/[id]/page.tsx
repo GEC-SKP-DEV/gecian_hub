@@ -28,7 +28,9 @@ function processEventImage(event: EventItem): EventItem {
 async function getEvent(id: string): Promise<EventItem | null> {
   const client = await db.connect();
   try {
-    const result = await client.query("SELECT * FROM events WHERE id = $1", [id]);
+    const result = await client.query("SELECT * FROM events WHERE id = $1", [
+      id,
+    ]);
     if (result.rows.length === 0) return null;
 
     const event = result.rows[0];
@@ -38,7 +40,11 @@ async function getEvent(id: string): Promise<EventItem | null> {
   }
 }
 
-export default async function EventPage({ params }: { params: { id: string } }) {
+export default async function EventPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params; // No need to `await params` anymore
   const event = await getEvent(id);
   if (!event) return notFound();
@@ -50,9 +56,15 @@ export default async function EventPage({ params }: { params: { id: string } }) 
       <h1 className="text-3xl font-bold">{event.title}</h1>
       <p className="text-gray-600">{event.description}</p>
       <p>{event.venue}</p>
-      <p>{eventDate} at {event.time}</p>
+      <p>
+        {eventDate} at {event.time}
+      </p>
       {event.image && (
-        <img src={event.image} alt={event.title} className="mt-4 max-w-lg rounded" />
+        <img
+          src={event.image}
+          alt={event.title}
+          className="mt-4 max-w-lg rounded"
+        />
       )}
     </div>
   );

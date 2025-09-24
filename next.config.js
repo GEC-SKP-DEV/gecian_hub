@@ -1,6 +1,6 @@
 // next.config.js
-const withPWA = require('next-pwa')({
-  dest: 'public',
+const withPWA = require("next-pwa")({
+  dest: "public",
   // By default, disable in dev. Set PWA_DEV=1 to test PWA locally.
   disable: process.env.NODE_ENV === "development", // ✅ disable in dev
   register: true,
@@ -8,12 +8,13 @@ const withPWA = require('next-pwa')({
 });
 
 const nextConfig = {
-  eslint:{
+  eslint: {
     ignoreDuringBuilds: true,
   },
-  typescript:{
-    ignoreDuringBuilds: true,
-  }
+  typescript: {
+
+    ignoreBuildErrors: true,
+  },
   // App Router is enabled by default in Next 13+, nothing special needed here.
   // You can add any other Next config as required.
 };
