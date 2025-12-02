@@ -32,8 +32,8 @@ export const busData: BusItem[] = [
     pdfUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
   },
   {
-    slug: 'bus-6',
-    name: 'Bus 6',
+    slug: 'private bus ',
+    name: 'private bus',
     pdfUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
   },
 ];
