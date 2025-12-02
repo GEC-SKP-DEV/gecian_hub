@@ -4,7 +4,9 @@ export interface SidebarLink {
 }
 
 export const sidebarLinks: SidebarLink[] = [
-  { label: "WhatsApp Channel", href: "/whatsapp" },
-  { label: "Credits", href: "/credits" },
-  { label: "User Guide", href: "/user-guide" },
+  { label: "Home", href: "/" },
+  { label: "Install App", href: "/sidebar/pwa-install" },
+  { label: "User Guide", href: "/sidebar/userguide" },
+  { label: "WhatsApp Channel", href: "https://whatsapp.com/channel/0029VbBp3dD3bbV9jFXPdd29" },
+  { label: "Terms & Conditions", href: "/sidebar/terms" },
 ];
