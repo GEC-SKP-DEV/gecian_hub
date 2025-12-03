@@ -1,112 +1,168 @@
 // app/terms/page.tsx
-
 import React from "react";
 
 export default function TermsPage() {
+  const updatedDate = new Date().toLocaleDateString();
+
   return (
-    <div className="max-w-3xl mx-auto px-6 py-10 text-black">
-      <h1 className="text-3xl font-bold mb-6">Terms & Conditions – Gecian Hub</h1>
-      <p className="text-sm opacity-80 mb-8">Last Updated: {new Date().toLocaleDateString()}</p>
+    <div className="max-w-3xl mx-auto px-6 py-10 text-black space-y-10">
+      {/* Page header */}
+      <header>
+        <h1 className="text-3xl font-bold mb-2">Gecian Hub — Legal & Policies</h1>
+        <p className="text-sm text-slate-600">Last Updated: {updatedDate}</p>
+      </header>
 
-      <p className="mb-6">
-        Welcome to <strong>Gecian Hub</strong> (“Platform”).  
-        By accessing or using this Platform, you (“User”) agree to the following Terms & Conditions.
-        If you do not agree, please stop using the Platform immediately.
-      </p>
+      {/* 1. Terms & Conditions */}
+      <section id="terms" className="prose">
+        <h2 className="text-2xl font-semibold mt-4">Terms & Conditions</h2>
+        <p>
+          Welcome to <strong>Gecian Hub</strong> ("Platform"). By accessing or using this Platform,
+          you ("User") agree to the following Terms & Conditions. If you do not agree, stop using
+          the Platform immediately.
+        </p>
 
-      {/* 1. Nature of the Platform */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">1. Nature of the Platform</h2>
-      <ul className="list-disc ml-6 space-y-2">
-        <li>Gecian Hub is a <strong>student-run, independent platform</strong> created for community activity and information sharing.</li>
-        <li>The platform’s source code is developed by the <strong>CodeCompass GitHub Organization</strong>, but deployed independently by students.</li>
-        <li>No college, institution, faculty member, or administration <strong>owns or endorses</strong> this Platform.</li>
-      </ul>
+        <h3 className="font-semibold mt-4">1. Nature of the Platform</h3>
+        <ul className="list-disc ml-6">
+          <li>
+            Gecian Hub is an <strong>independent, student-run application</strong> created for
+            informational and community use.
+          </li>
+          <li>The main code is developed by the <strong>CodeCompass</strong> GitHub organization.</li>
+          <li>
+            The Platform is deployed and operated independently by students and is <strong>not
+            endorsed</strong> or managed by any college or authority.
+          </li>
+        </ul>
 
-      {/* 2. No Institutional Responsibility */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">2. No Institutional Responsibility</h2>
-      <p>
-        Colleges, universities, institutes, and staff bear <strong>zero liability</strong> for:
-      </p>
-      <ul className="list-disc ml-6 space-y-2 mt-2">
-        <li>Platform content</li>
-        <li>User actions or activity</li>
-        <li>Technical issues</li>
-        <li>Community communication</li>
-        <li>Consequences arising from Platform use</li>
-      </ul>
-      <p className="mt-3">The Platform is <strong>not an official college service</strong>.</p>
+        <h3 className="font-semibold mt-4">2. No Institutional Responsibility</h3>
+        <p>
+          Colleges, departments, faculty, or administrative bodies have no legal, academic, or
+          disciplinary responsibility for content or activity on this Platform.
+        </p>
 
-      {/* 3. Developer & Maintainer Disclaimer */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">3. Developer & Maintainer Disclaimer</h2>
-      <ul className="list-disc ml-6 space-y-2">
-        <li>CodeCompass contributors do <strong>not operate</strong> this Platform.</li>
-        <li>They do <strong>not moderate</strong> or control deployment, content, or actions of users.</li>
-        <li>The software is provided <strong>"as-is"</strong> with no warranties.</li>
-        <li>Student deployers/hosters are <strong>not legally responsible</strong> for user activity.</li>
-      </ul>
+        <h3 className="font-semibold mt-4">3. Developer & Maintainer Disclaimer</h3>
+        <ul className="list-disc ml-6">
+          <li>The Platform is provided <strong>as-is</strong> without warranties.</li>
+          <li>Contributors, CodeCompass, and student hosts do not operate or supervise the Platform.</li>
+          <li>No contributor accepts liability for misuse, technical issues, or data errors.</li>
+        </ul>
 
-      {/* 4. User Responsibility */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">4. User Responsibility</h2>
-      <ul className="list-disc ml-6 space-y-2">
-        <li>Users are responsible for the accuracy of information they share.</li>
-        <li>Users must follow laws, college rules, and community norms.</li>
-        <li>Any misuse or misconduct is the sole responsibility of the user.</li>
-        <li>The Platform is not liable for academic or disciplinary consequences.</li>
-      </ul>
+        <h3 className="font-semibold mt-4">4. User Responsibility</h3>
+        <ul className="list-disc ml-6">
+          <li>Users are responsible for content they upload and actions they take.</li>
+          <li>Users must comply with applicable laws and college rules.</li>
+          <li>Consequences arising from misuse (legal, academic, or disciplinary) are the User's responsibility.</li>
+        </ul>
 
-      {/* 5. Content & Conduct */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">5. Content & Conduct</h2>
-      <p>Users must not share:</p>
-      <ul className="list-disc ml-6 space-y-2 mt-2">
-        <li>Illegal content</li>
-        <li>Harassment or abusive messages</li>
-        <li>Copyrighted material without permission</li>
-        <li>False or misleading information</li>
-        <li>Content violating institutional or national rules</li>
-      </ul>
+        <h3 className="font-semibold mt-4">5. Content & Conduct</h3>
+        <p>Users must not upload or share:</p>
+        <ul className="list-disc ml-6">
+          <li>Illegal or harmful content</li>
+          <li>Harassment, threats, or abusive messages</li>
+          <li>Copyrighted material without permission</li>
+          <li>False or misleading information</li>
+        </ul>
 
-      {/* 6. Data & Privacy */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">6. Data & Privacy</h2>
-      <ul className="list-disc ml-6 space-y-2">
-        <li>Only minimal functional data may be collected.</li>
-        <li>No sensitive academic or institutional data is stored.</li>
-        <li>Users should avoid sharing personal or confidential information.</li>
-      </ul>
+        <h3 className="font-semibold mt-4">6. Data & Privacy (short)</h3>
+        <p>We collect minimal functional data required for the site to operate. Do not upload sensitive personal or institutional data.</p>
 
-      {/* 7. No Liability */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">7. No Liability</h2>
-      <p>The Platform and its contributors shall not be liable for:</p>
-      <ul className="list-disc ml-6 space-y-2 mt-2">
-        <li>Loss or damage</li>
-        <li>Technical errors or outages</li>
-        <li>Data loss</li>
-        <li>Misuse by third parties</li>
-        <li>Any direct or indirect damages</li>
-      </ul>
+        <h3 className="font-semibold mt-4">7. No Liability</h3>
+        <p>
+          To the maximum extent permitted by law, neither the Platform nor its contributors shall be liable for loss, damage, service interruptions, or other consequences arising from use.
+        </p>
 
-      {/* 8. Third-Party Services */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">8. Third-Party Services</h2>
-      <p>External services linked through the Platform follow their own terms and policies.</p>
+        <h3 className="font-semibold mt-4">8. Third-Party Links</h3>
+        <p>The Platform may link to external services (KTU, Devpost, SPA calculators). We are not responsible for external sites' content or policies.</p>
 
-      {/* 9. Platform Modification */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">9. Platform Modification & Termination</h2>
-      <p>We may modify features or terminate the Platform without notice.</p>
+        <h3 className="font-semibold mt-4">9. Modification & Termination</h3>
+        <p>Features may change or the Platform may be discontinued at any time without prior notice.</p>
 
-      {/* 10. Acceptance of Terms */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">10. Acceptance of Terms</h2>
-      <p>By using Gecian Hub, you accept full responsibility for your actions and release all institutions, developers, and maintainers from any liability.</p>
+        <h3 className="font-semibold mt-4">10. Governing Law & Acceptance</h3>
+        <p>
+          These Terms are governed by the laws applicable in India. By using the Platform you accept these Terms and agree that developers, maintainers, and institutions bear no responsibility for your actions.
+        </p>
+      </section>
 
-      {/* 11. Governing Law */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">11. Governing Law</h2>
-      <p>These Terms follow applicable laws in India.</p>
+      {/* 2. Privacy Policy */}
+      <section id="privacy" className="prose">
+        <h2 className="text-2xl font-semibold mt-4">Privacy Policy</h2>
+        <p>Gecian Hub prioritizes privacy. This section explains what we collect and how we handle data.</p>
 
-      {/* 12. Contact */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">12. Contact</h2>
-      <p>
-        For issues or questions, contact your campus’s student maintainers or community moderators.
-        <br />
-        <strong>Do not contact</strong> college administration or the CodeCompass organization.
-      </p>
+        <h3 className="font-semibold mt-4">1. Information We Collect</h3>
+        <ul className="list-disc ml-6">
+          <li>Minimal anonymous usage logs for improving the app.</li>
+          <li>Content you voluntarily upload (project files, text posts).</li>
+        </ul>
+
+        <h3 className="font-semibold mt-4">2. What We Do NOT Collect</h3>
+        <ul className="list-disc ml-6">
+          <li>We do not collect passwords, institutional credentials, or government IDs.</li>
+          <li>No automatic location tracking or sensitive academic/financial data.</li>
+        </ul>
+
+        <h3 className="font-semibold mt-4">3. How We Use Data</h3>
+        <ul className="list-disc ml-6">
+          <li>To operate core features and moderate content.</li>
+          <li>To improve usability and diagnose issues.</li>
+        </ul>
+
+        <h3 className="font-semibold mt-4">4. Data Removal & Your Rights</h3>
+        <p>You may request deletion or correction of content you uploaded by contacting the student moderators listed in the app.</p>
+
+        <h3 className="font-semibold mt-4">5. Third-Party Services</h3>
+        <p>External links (KTU, SPA calculators, Devpost, etc.) have their own privacy policies. We are not responsible for their practices.</p>
+      </section>
+
+      {/* 3. DMCA / Content Removal Policy */}
+      <section id="dmca" className="prose">
+        <h2 className="text-2xl font-semibold mt-4">DMCA / Content Removal Policy</h2>
+        <p>We respect intellectual property. If you believe content on the Platform infringes your rights, submit a removal request.</p>
+
+        <h3 className="font-semibold mt-4">1. Grounds for Removal</h3>
+        <ul className="list-disc ml-6">
+          <li>Copyright infringement or plagiarism</li>
+          <li>Personal data published without consent</li>
+          <li>Illegal or abusive content</li>
+        </ul>
+
+        <h3 className="font-semibold mt-4">2. How to Request Removal</h3>
+        <p>Provide:</p>
+        <ul className="list-disc ml-6">
+          <li>Link to the content</li>
+          <li>Description of the violation</li>
+          <li>Proof of ownership (if applicable)</li>
+          <li>Your contact information</li>
+        </ul>
+
+        <h3 className="font-semibold mt-4">3. Review & Action</h3>
+        <p>Student moderators will review requests and may remove content that violates policies. Because we are a student-run platform, response times may vary.</p>
+
+        <h3 className="font-semibold mt-4">4. No Legal Guarantee</h3>
+        <p>Removal by moderators does not substitute for legal action; we cannot provide legal resolution but will act on valid reports.</p>
+      </section>
+
+      {/* 4. Disclaimer */}
+      <section id="disclaimer" className="prose">
+        <h2 className="text-2xl font-semibold mt-4">Disclaimer</h2>
+        <p>All content is provided for convenience. The Platform is unofficial and student-run.</p>
+
+        <h3 className="font-semibold mt-4">1. No Official Affiliation</h3>
+        <p>The Platform is not affiliated with any college, department, or governing body.</p>
+
+        <h3 className="font-semibold mt-4">2. Accuracy Not Guaranteed</h3>
+        <p>We strive for accuracy, but information (e.g., bus times, timetables) may be incorrect or outdated — verify independently.</p>
+
+        <h3 className="font-semibold mt-4">3. No Advice</h3>
+        <p>Nothing here is professional, legal, or academic advice. Use at your own discretion.</p>
+      </section>
+
+      {/* Final note / contact */}
+      <section id="final" className="prose">
+        <h2 className="text-2xl font-semibold mt-4">Final Note & Contact</h2>
+        <p>
+          By using Gecian Hub you agree to all policies on this page. For policy, takedown, or privacy requests, contact the student maintainers . We do not handle official college administration requests — do not contact CodeCompass or college authorities for day-to-day moderation.
+        </p>
+      </section>
 
       <div className="h-10" />
     </div>
