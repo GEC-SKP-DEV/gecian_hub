@@ -130,11 +130,11 @@ export default function DateSelector({ selectedDate, onDateChange }: DateSelecto
             </div>
 
             {isFirstOfMonth && (
-              <div className="flex flex-col justify-center items-center text-center text-xs leading-none font-semibold mt-1 pl-[12px]">
-                <div className="underline w-[54px] h-[24px] font-inter font-medium text-[20px] leading-[100%]">
+              <div className="flex flex-col justify-center items-center text-center text-xs leading-none font-semibold mx-3 pl-[12px] ">
+                <div className="underline  h-[24px] font-inter font-medium text-[20px] leading-[100%]">
                   {month}
                 </div>
-                <div className="w-[54px] h-[19px] font-inter font-medium text-[16px] leading-[100%]">
+                <div className=" h-[19px] font-inter font-medium text-[16px] leading-[100%]">
                   {year}
                 </div>
               </div>

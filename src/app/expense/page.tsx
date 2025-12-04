@@ -92,7 +92,7 @@ export default function ExpenseDetailsPage() {
 
   return (
     <div className="min-h-screen bg-white p-4">
-      <div className="flex justify-between items-center mb-4 text-center">
+      <div className="flex justify-between items-center mb-4  text-center">
         <h1 className="text-2xl text-center font-bold text-black w-full">
           Expense Tracker
         </h1>
@@ -147,14 +147,14 @@ export default function ExpenseDetailsPage() {
         <>
           <button
             onClick={() => setShowForm(true)}
-            className="fixed bottom-20 right-4 p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-all"
+            className="fixed bottom-[120px] right-4 p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-all"
           >
             <Plus />
           </button>
 
           <Link
             href="/expense/montly"
-            className="fixed bottom-24 left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold px-4 py-2 rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
+            className="fixed bottom-[120px] left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold px-4 py-2 rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
           >
             📊 Monthly View
           </Link>
