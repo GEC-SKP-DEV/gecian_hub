@@ -1,11 +1,22 @@
 // app/terms/page.tsx
+"use client"
 import React from "react";
+import { useRouter } from "next/navigation";
+import { ArrowLeftIcon } from "lucide-react";
 
 export default function TermsPage() {
   const updatedDate = new Date().toLocaleDateString();
-
+  const router = useRouter()
   return (
     <div className="max-w-3xl mx-auto px-6 py-10 text-black space-y-10">
+      <div className="flex justify-start items-center mb-6">
+        <button
+          className="border text-black border-gray-400 rounded-full p-2"
+          onClick={() => router.push("/home")}
+        >
+          <ArrowLeftIcon className="w-5 h-5" />
+        </button>
+      </div>
       {/* Page header */}
       <header>
         <h1 className="text-3xl font-bold mb-2">Gecian Hub — Legal & Policies</h1>

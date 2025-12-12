@@ -1,8 +1,20 @@
+"use client"
 import React from "react";
+import { useRouter } from "next/navigation";
+import { ArrowLeftIcon } from "lucide-react";
 
 export default function UserGuidePage() {
+  const router = useRouter()
   return (
     <div className="w-full max-w-3xl mx-auto py-10 px-5 space-y-8">
+      <div className="flex justify-start items-center mb-6">
+        <button
+          className="border text-black border-gray-400 rounded-full p-2"
+          onClick={() => router.push("/home")}
+        >
+          <ArrowLeftIcon className="w-5 h-5" />
+        </button>
+      </div>
       <h1 className="text-3xl font-bold">Gecian Hub – User Guide</h1>
 
       <section>
