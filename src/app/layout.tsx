@@ -8,8 +8,6 @@ import { Viewport } from "next";
 import { JsonLd } from "@/components/seo/JsonLd";
 import TopNavbar from '@/components/topNavbar';
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import TrackPageViews from "@/components/TrackPageViews";
-
 export const metadata: Metadata = {
   title: "Gecian Hub",
   description: "An app for GEC Palakkad students",
@@ -121,7 +119,6 @@ export default function RootLayout({
         />
         <TopNavbar />
         <GoogleAnalytics />
-        <TrackPageViews />
         {children}
         <Toaster
           position="bottom-right"
