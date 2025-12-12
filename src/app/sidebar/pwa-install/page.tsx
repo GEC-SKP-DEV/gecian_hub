@@ -1,10 +1,21 @@
 // app/pwa-install/page.tsx
-
+"use client"
 import React from "react";
+import { useRouter } from "next/navigation";
+import { ArrowLeftIcon } from "lucide-react";
 
 export default function PWAInstallPage() {
+  const router = useRouter();
   return (
     <div className="max-w-3xl mx-auto px-6 py-10 text-black">
+      <div className="flex justify-start items-center mb-6">
+        <button
+          className="border text-black border-gray-400 rounded-full p-2"
+          onClick={() => router.push("/home")}
+        >
+          <ArrowLeftIcon className="w-5 h-5" />
+        </button>
+      </div>
       <h1 className="text-3xl font-bold mb-6">📦 How to Install Gecian Hub (PWA)</h1>
 
       <p className="mb-6">
@@ -142,17 +153,7 @@ export default function PWAInstallPage() {
 
       <hr className="border-white/20 my-8" />
 
-      {/* Images offer */}
-      <h2 className="text-2xl font-semibold mb-4">📌 Want images/screenshots?</h2>
-      <p>
-        I can generate:
-      </p>
-      <ul className="list-disc ml-6 space-y-2 mb-6">
-        <li>Step-by-step images</li>
-        <li>GIF animations</li>
-        <li>Printable/Downloadable version</li>
-        <li>A popup installation guide UI for your app</li>
-      </ul>
+      
 
       <div className="h-10" />
     </div>
