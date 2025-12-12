@@ -3,6 +3,7 @@
 
 import { busData } from "@/data/bus";
 import { useRouter } from "next/navigation";
+import { ArrowLeftIcon,  } from "lucide-react";
 
 const BusPage: React.FC = () => {
   const router = useRouter(); // ✅ FIX: Must be inside the component
@@ -10,7 +11,16 @@ const BusPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="px-6 py-8">
+       <div className="px-6 py-8">
+        {/* Back Button */}
+        <div className="flex justify-start items-center mb-4">
+          <button
+            className="border text-black border-gray-400 rounded-full p-2"
+            onClick={() => router.push("/home")}
+          >
+            <ArrowLeftIcon className="w-5 h-5" />
+          </button>
+        </div>
         <div className="text-center mb-8">
           <div className="relative">
             <h1 className="text-[30px] font-bold text-black">College Bus</h1>
