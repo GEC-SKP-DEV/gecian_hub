@@ -17,7 +17,7 @@ const clubData: Club[] = [
     name: "IEEE",
     slug: "ieee",
     description:
-      "IEEE is a professional club focused on advancing technology and innovation through workshops, seminars, and projects.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "IEEE (Institute of Electrical and Electronics Engineers) is the world’s largest technical organization that supports students and professionals in all major engineering fields, including electronics, electrical, computer science, AI, robotics, software development, cybersecurity, and more. For first-year students, IEEE is one of the best platforms to learn beyond the syllabus through workshops, hands-on sessions, seminars, hackathons, competitions, and technical events. It helps you build essential skills like coding, project development, teamwork, leadership, communication, and event management while connecting you with industry experts, seniors, and a global community of engineers. Through the IEEE Student Branch, you get access to international competitions, research resources, journals, and opportunities to take up leadership roles that strengthen your resume and boost your career. In simple terms, IEEE is the perfect place to grow technically, gain confidence, make friends, and kickstart your engineering journey from the very first year",
     image: "/club_image/ieee.jpg",
     socials: {
       instagram:
@@ -28,11 +28,11 @@ const clubData: Club[] = [
     enrolled: true,
   },
   {
-    name: "MuLearn",
-    slug: "mulearn",
+    name: "SAE",
+    slug: "SAE",
     description:
-      "MuLearn focuses on peer learning, encouraging students to explore and grow through collaborative knowledge sharing.",
-    image: "/club_image/mulearn.png",
+      "SAE India, formerly the Society of Automotive Engineers India, is an affiliate of SAE International and operates collegiate clubs across India. These clubs emphasize skill development, knowledge sharing, competitions, networking, and professional growth to advance automotive and mobility engineering. SAE India contributes to technology advancement, safety standards, and sustainable mobility through industry-academia collaboration. [SAE India context, general knowledge",
+    image: "/club_image/sae.png",
     socials: {
       instagram: "https://instagram.com/mulearn",
       linkedin:
@@ -45,7 +45,7 @@ const clubData: Club[] = [
     name: "Mulearn",
     slug: "uuu",
     description:
-      "   on peer learning, encouraging students to explore and grow through collaborative knowledge sharing.",
+      " μLearn is a community-driven learning platform that helps students build real skills through a structured, peer-based learning culture. Unlike traditional clubs, μLearn focuses on self-paced skill development combined with guided challenges in areas like programming, AI, cybersecurity, design, web development, problem-solving, soft skills, productivity habits, and more. For first-year students, μLearn is one of the fastest ways to grow because it uses a micro-learning model—learning small concepts daily through tasks, Discord challenges, and community interactions. It connects you with seniors, mentors, and learners across Kerala, gives you opportunities to earn skill points, badges, and recognition, and encourages you to work on projects, portfolios, and challenges that directly improve your career readiness. Along with technical growth, μLearn also teaches discipline, consistency, teamwork, and leadership through its community-based activities. In simple words, μLearn is the best place for first-years to start building skills, discover interests, stay consistent, and grow with a supportive student community.",
     image: "/club_image/mulearn.png",
     socials: {
       instagram: "https://instagram.com/mulearn",
