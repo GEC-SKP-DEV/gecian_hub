@@ -1,29 +1,14 @@
 "use client";
+import { GoogleAnalytics } from "nextjs-google-analytics";
 
-import Script from "next/script";
-
-export default function GoogleAnalytics() {
-  const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-
-  if (!measurementId) return null;
-
+export const GoogleAnalytic = () => {
   return (
     <>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
-        strategy="afterInteractive"
+      <GoogleAnalytics
+        trackPageViews
+        gaMeasurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
+        debugMode={false} // Enable for debugging
       />
-
-      <Script id="ga-init" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${measurementId}', {
-            send_page_view: true
-          });
-        `}
-      </Script>
     </>
   );
-}
+};
