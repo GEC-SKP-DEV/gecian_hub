@@ -1,14 +1,13 @@
 "use client";
-import { GoogleAnalytics } from "nextjs-google-analytics";
 
-export const GoogleAnalytic = () => {
+import { GoogleAnalytics as GAComponent } from "nextjs-google-analytics";
+
+export default function GoogleAnalytics() {
   return (
-    <>
-      <GoogleAnalytics
-        trackPageViews
-        gaMeasurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
-        debugMode={false} // Enable for debugging
-      />
-    </>
+    <GAComponent
+      trackPageViews
+      gaMeasurementId="G-MY995PN0ND"
+      debugMode={false}
+    />
   );
-};
+}
