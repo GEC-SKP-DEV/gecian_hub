@@ -1,10 +1,13 @@
 // bus/[busnumber]/page.tsx
+"use client"
 import { notFound } from "next/navigation";
 import { busRoutes } from "@/data/busRoutes";
+import { useRouter } from "next/navigation";
+import { ArrowLeftIcon,  } from "lucide-react";
 
 export default function BusRoutePage({ params }: { params: { busNumber: string } }) {
   const { busNumber } = params;
-
+  const router = useRouter();
   const bus = busRoutes.find((b) => b.slug === busNumber);
 
   if (!bus) return notFound();
@@ -12,6 +15,14 @@ export default function BusRoutePage({ params }: { params: { busNumber: string }
   return (
     <div className="min-h-screen bg-white p-6 text-black">
       {/* Heading */}
+       <div className="flex justify-start items-center mb-4">
+          <button
+            className="border text-black border-gray-400 rounded-full p-2"
+            onClick={() => router.push("/home")}
+          >
+            <ArrowLeftIcon className="w-5 h-5" />
+          </button>
+        </div>
       <div className="text-center mb-6 relative">
         <h1 className="text-3xl font-bold">{bus.title}</h1>
         <svg
