@@ -18,7 +18,7 @@ export default function BusRoutePage({ params }: { params: { busNumber: string }
        <div className="flex justify-start items-center mb-4">
           <button
             className="border text-black border-gray-400 rounded-full p-2"
-            onClick={() => router.push("/home")}
+            onClick={() => router.push("/bus")}
           >
             <ArrowLeftIcon className="w-5 h-5" />
           </button>
