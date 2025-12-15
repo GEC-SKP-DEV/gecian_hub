@@ -213,10 +213,24 @@ const TimeTableBlock = () => {
               e.stopPropagation();
               setIsExpanded(false);
             }}
-            className="absolute top-4 right-4 text-white text-2xl leading-none"
+            className="
+              absolute top-3 right-3
+              w-10 h-10
+              flex items-center justify-center
+              rounded-full
+              bg-black/70 text-white
+              backdrop-blur-sm
+              shadow-lg
+              transition-all
+              hover:bg-black hover:scale-105
+              active:scale-95
+              focus:outline-none focus:ring-2 focus:ring-black/40
+              sm:w-11 sm:h-11
+            "
           >
-            ×
+            <span className="text-xl sm:text-2xl leading-none">×</span>
           </button>
+
 
           {/* Content */}
           <div className="w-full h-full flex items-center justify-center p-4" onClick={(e) => e.stopPropagation()}>

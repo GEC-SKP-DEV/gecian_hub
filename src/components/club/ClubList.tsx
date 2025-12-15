@@ -20,7 +20,7 @@ export default function ClubList() {
   });
 
   return (
-    <div className="p-4 min-h-screen text-white">
+    <div className="p-4 min-h-screen text-white pb-24">
       <div className="flex justify-between items-center mb-2">
         <button
           className="border text-black border-gray-400 rounded-full p-2"

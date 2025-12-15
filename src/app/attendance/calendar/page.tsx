@@ -222,7 +222,8 @@ export default function AttendanceCalendarAllSubjects() {
   };
 
   return (
-    <main className="p-4 max-w-2xl mx-auto pb-28">
+   <main className="px-3 sm:px-4 max-w-2xl mx-auto pb-32">
+
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Attendance</h1>
         <button
@@ -235,37 +236,38 @@ export default function AttendanceCalendarAllSubjects() {
       </div>
 
       <section className="rounded-xl bg-white shadow p-4 mb-5">
-        <header className="flex justify-between items-center mb-3">
-          <button
-            onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-            className="text-blue-600 hover:underline px-2 py-1"
-          >
-            Prev
-          </button>
-          <h2 className="text-lg font-semibold">
-            {format(currentMonth, "MMMM yyyy")}
-          </h2>
-          <div className="flex items-center gap-2">
-            <label className="text-sm text-gray-600">Show</label>
-            <select
-              className="border border-gray-300 rounded px-2 py-1 text-sm"
-              value={calendarFilter}
-              onChange={(e) => setCalendarFilter(e.target.value as any)}
-              aria-label="Filter calendar by status"
-            >
-              <option value="all">All</option>
-              <option value="present">Present</option>
-              <option value="absent">Absent</option>
-              <option value="duty">Duty</option>
-            </select>
-          </div>
-          <button
-            onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-            className="text-blue-600 hover:underline px-2 py-1"
-          >
-            Next
-          </button>
-        </header>
+       <header className="mb-4">
+  <h2 className="text-lg sm:text-xl font-semibold text-center mb-3">
+    {format(currentMonth, "MMMM yyyy")}
+  </h2>
+
+  <div className="flex flex-wrap justify-between items-center gap-2">
+    <button
+      onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+      className="text-blue-600 text-sm sm:text-base"
+    >
+      ← Prev
+    </button>
+
+    <select
+      className="border border-gray-300 rounded px-2 py-1 text-sm"
+      value={calendarFilter}
+      onChange={(e) => setCalendarFilter(e.target.value as any)}
+    >
+      <option value="all">All</option>
+      <option value="present">Present</option>
+      <option value="absent">Absent</option>
+      <option value="duty">Duty</option>
+    </select>
+
+    <button
+      onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+      className="text-blue-600 text-sm sm:text-base"
+    >
+      Next →
+    </button>
+  </div>
+</header>
 
         <div className="grid grid-cols-7 gap-2 text-xs font-bold mb-1 select-none">
           {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
@@ -314,14 +316,12 @@ export default function AttendanceCalendarAllSubjects() {
                     disabled={isFuture(day)}
                     aria-pressed={isSelected}
                     title={format(day, "eeee, MMMM do yyyy")}
-                    className={`aspect-square flex items-center justify-center rounded-full border transition font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400 ${bg} ${
-                      filteredOut ? "opacity-30" : ""
-                    }`}
-                    style={{
-                      minWidth: 36,
-                      minHeight: 36,
-                      transition: "all 0.15s",
-                    }}
+                    className={`aspect-square min-w-[36px] min-h-[36px] sm:min-w-[42px] sm:min-h-[42px]
+                    flex items-center justify-center rounded-full border transition font-semibold
+                    focus:outline-none focus:ring-2 focus:ring-blue-400 ${bg}
+                    ${filteredOut ? "opacity-30" : ""}
+                  `}
+
                   >
                     {day.getDate()}
                   </button>
@@ -407,7 +407,9 @@ export default function AttendanceCalendarAllSubjects() {
       )}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40">
-          <div className="bg-white w-full sm:max-w-xl sm:rounded-lg sm:shadow-xl p-4 max-h-[85vh] overflow-auto">
+          <div className="bg-white w-full sm:max-w-xl sm:rounded-lg sm:shadow-xl
+          p-4 max-h-[80vh] overflow-y-auto overscroll-contain">
+
             <header className="flex items-center justify-between gap-3 mb-3">
               <div className="flex items-center gap-3">
                 <span className="text-sm text-gray-600">
@@ -476,7 +478,8 @@ export default function AttendanceCalendarAllSubjects() {
                           </span>
                         )}
                       </div>
-                      <div className="flex gap-2 items-center">
+                      <div className="flex flex-wrap gap-2 items-center justify-end">
+
                         <button
                           onClick={() =>
                             setStatusForSubject(s.id, "present", selectedDate)
