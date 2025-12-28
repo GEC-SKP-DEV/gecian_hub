@@ -6,17 +6,30 @@ import clubData from '@/data/club';
 import { ArrowLeftIcon, Filter } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
-type FilterType = 'all' | 'tech' | 'non-tech';
-
 export default function ClubList() {
   const router = useRouter();
   const [filterOpen, setFilterOpen] = useState(false);
-  const [filter, setFilter] = useState<FilterType>('all');
+  const [filter, setFilter] = useState<string>('all');
+
+  // derive categories from data so filter options stay in sync
+  const categories = Array.from(
+    new Set(
+      clubData
+        .flatMap(c => (Array.isArray(c.category) ? c.category : [c.category ?? '']))
+        .filter(Boolean)
+    )
+  );
+
+  const formatLabel = (cat: string) => {
+    const text = cat.replace(/[-_]/g, ' ');
+    return text.split(' ').map(s => s[0]?.toUpperCase() + s.slice(1)).join(' ') + ' Clubs';
+  };
 
   // ✅ CATEGORY BASED FILTER
   const filteredClubs = clubData.filter(club => {
     if (filter === 'all') return true;
-    return club.category === filter;
+    const cats = Array.isArray(club.category) ? club.category : [club.category ?? ''];
+    return cats.includes(filter);
   });
 
   return (
@@ -48,18 +61,17 @@ export default function ClubList() {
 
           {filterOpen && (
             <div className="absolute right-0 mt-2 w-44 bg-white text-black rounded-md shadow-lg z-10">
+              {/* All option + dynamic category options */}
               {[
                 { label: 'All Clubs', value: 'all' },
-                { label: 'Tech Clubs', value: 'tech' },
-                { label: 'Non-Tech Clubs', value: 'non-tech' },
+                ...categories.map(cat => ({ label: formatLabel(cat), value: cat })),
               ].map(item => (
                 <button
                   key={item.value}
-                  className={`block w-full text-left px-4 py-2 hover:bg-gray-200 ${
-                    filter === item.value ? 'font-semibold bg-gray-100' : ''
-                  }`}
+                  className={`block w-full text-left px-4 py-2 hover:bg-gray-200 ${filter === item.value ? 'font-semibold bg-gray-100' : ''
+                    }`}
                   onClick={() => {
-                    setFilter(item.value as FilterType);
+                    setFilter(item.value);
                     setFilterOpen(false);
                   }}
                 >
