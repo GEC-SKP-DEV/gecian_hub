@@ -1,7 +1,10 @@
 {
   "name": "gecian_hub",
   "version": "0.1.0",
+  "description": "A modern student portal for GECians to manage complaints, expenses, attendance, clubs, and events.",
+  "author": "Gecian Hub",
   "private": true,
+  "main": "electron/main.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,7 +13,13 @@
     "update-snapshot": "jest --updateSnapshot",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "electron": "electron .",
+    "electron:dev": "cross-env NODE_ENV=development electron .",
+    "electron:build": "electron-builder",
+    "electron:build:win": "electron-builder --win",
+    "electron:build:mac": "electron-builder --mac",
+    "electron:build:linux": "electron-builder --linux"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.8",
@@ -49,6 +58,9 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19",
     "@types/react-fontawesome": "^1.6.8",
+    "cross-env": "^7.0.3",
+    "electron": "^39.2.7",
+    "electron-builder": "^25.1.8",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",

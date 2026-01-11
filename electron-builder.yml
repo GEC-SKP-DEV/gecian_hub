@@ -1,0 +1,97 @@
+appId: com.gecian.hub
+productName: Gecian Hub
+copyright: Copyright © 2024 Gecian Hub
+# Directories
+directories:
+  buildResources: build
+  output: dist
+
+# Files to include/exclude
+files:
+  - electron/**/*
+  - public/icons/**/*
+  - package.json
+  - "!node_modules/**/*"
+  - "!src/**/*"
+  - "!__test__/**/*"
+  - "!doc/**/*"
+  - "!*.md"
+  - "!*.config.*"
+  - "!tsconfig.json"
+  - "!.git/**/*"
+  - "!.next/**/*"
+
+# Windows configuration
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - ia32
+  icon: public/icons/icon-512.ico
+  publisherName: Gecian Hub
+  requestedExecutionLevel: asInvoker
+  artifactName: ${productName} Setup ${version}.${ext}
+
+# macOS configuration
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  icon: public/icons/icon-512.ico
+  category: public.app-category.education
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: null
+  entitlementsInherit: null
+  artifactName: ${productName}-${version}.${ext}
+
+# Linux configuration
+linux:
+  target:
+    - target: AppImage
+      arch:
+        - x64
+    - target: deb
+      arch:
+        - x64
+  icon: public/icons/icon-512.ico
+  category: Education
+  synopsis: A modern student portal for GECians
+  description: A modern student portal for GECians to manage complaints, expenses, attendance, clubs, and events.
+  artifactName: ${name}_${version}_${arch}.${ext}
+
+# NSIS installer configuration (Windows)
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Gecian Hub
+  # Use the same .ico file for all NSIS icons
+  installerIcon: public/icons/icon-512.ico
+  uninstallerIcon: public/icons/icon-512.ico
+  installerHeaderIcon: public/icons/icon-512.ico
+  menuCategory: false
+
+# DMG configuration (macOS)
+dmg:
+  title: ${productName} ${version}
+  icon: public/icons/icon-512.png
+  background: null
+  contents:
+    - x: 130
+      y: 220
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications
+
+# Compression
+compression: maximum
+
+# Publish configuration (optional - for auto-updates)
+# publish: null
+
