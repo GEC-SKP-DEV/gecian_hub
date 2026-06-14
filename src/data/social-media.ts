@@ -38,6 +38,11 @@ export const socialLinks: SocialLink[] = [
     platform: "reddit",
     url: "https://www.reddit.com/r/LifeAtMannampatta/s/Y73K0MfqGw",
   },
+  {
+    name: "gecskp ",
+    platform: "reddit",
+    url: "https://www.reddit.com/r/gecskp/",
+  },
 
   // Instagram
   {

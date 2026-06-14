@@ -14,5 +14,4 @@ export const bottomTabs = [
   { name: "finance", icon: Money, href: "/expense", label: "Finance" },
   { name: "department", icon: Buildings, href: "/department", label: "Department" },
   { name: "event", icon: Calendar, href: "/events", label: "Event" },
-  
 ];
