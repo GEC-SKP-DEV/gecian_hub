@@ -1,11 +1,11 @@
 export interface SocialLink {
   name: string;
-  platform: "linkedin" | "reddit" | "instagram";
+  platform: "linkedin" | "reddit" | "instagram" | "whatsapp";
   url: string;
 }
 
 export const socialLinks: SocialLink[] = [
-  // LinkedIn
+  // ===================== LINKEDIN =====================
   {
     name: "CSE GECPKD",
     platform: "linkedin",
@@ -27,7 +27,7 @@ export const socialLinks: SocialLink[] = [
     url: "https://www.linkedin.com/company/codechef-gecpkd-chapter/posts/",
   },
 
-  // Reddit
+  // ===================== REDDIT =====================
   {
     name: "GEC Palakkad Reddit",
     platform: "reddit",
@@ -39,12 +39,12 @@ export const socialLinks: SocialLink[] = [
     url: "https://www.reddit.com/r/LifeAtMannampatta/s/Y73K0MfqGw",
   },
   {
-    name: "gecskp ",
+    name: "gecskp",
     platform: "reddit",
     url: "https://www.reddit.com/r/gecskp/",
   },
 
-  // Instagram
+  // ===================== INSTAGRAM =====================
   {
     name: "Life At GEC",
     platform: "instagram",
@@ -129,5 +129,17 @@ export const socialLinks: SocialLink[] = [
     name: "Beacon GEC Palakkad",
     platform: "instagram",
     url: "https://www.instagram.com/beacon_gec_palakkad/",
+  },
+
+  // ===================== WHATSAPP =====================
+  {
+    name: "Tech It Out",
+    platform: "whatsapp",
+    url: "https://whatsapp.com/channel/0029VaNI8wK89inrfmszpJ1v",
+  },
+  {
+    name: "Career Connect",
+    platform: "whatsapp",
+    url: "https://whatsapp.com/channel/0029VaIZXglK5cDC7Q94RG2O",
   },
 ];
