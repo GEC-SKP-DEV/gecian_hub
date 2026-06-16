@@ -10,6 +10,14 @@ export const departments: Department[] = [
         url: "https://gecskp.ac.in/cse.php",
       },
       {
+        name: "Cse starter guide",
+        url: "https://codecompasss.github.io/cse-student-starter-guide/",
+      },
+      {
+        name: "cse placment guide ",
+        url: "https://codecompasss.github.io/College-Placement-Guide/",
+      },
+      {
         name: "DSA Mastery (NeetCode Roadmap)",
         url: "https://neetcode.io/roadmap",
       },
