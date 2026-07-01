@@ -2,15 +2,14 @@ import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import TopNavbar from "@/components/topNavbar";
 
-// Mock iconsax-react
-jest.mock("iconsax-react", () => ({
-  User: jest.fn(({ size, color, variant, ...props }) => (
+// Mock lucide-react
+jest.mock("lucide-react", () => ({
+  User: jest.fn(({ size, color, ...props }) => (
     <svg
       data-testid="user-icon"
       width={size}
       height={size}
       fill={color}
-      data-variant={variant}
       {...props}
     >
       <circle cx="12" cy="12" r="10" />

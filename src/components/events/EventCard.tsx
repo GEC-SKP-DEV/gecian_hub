@@ -9,6 +9,7 @@ interface EventCardProps {
     venue?: string | null;
     date?: Date | null;
     time?: string | null;
+    image?: string | null;
     createdAt: Date;
     updatedAt: Date;
   };

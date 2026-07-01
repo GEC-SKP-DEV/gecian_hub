@@ -39,8 +39,8 @@ async function getEvent(id: string): Promise<EventItem | null> {
   }
 }
 
-export default async function EventPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function EventPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const event = await getEvent(id);
   
   if (!event) return notFound();

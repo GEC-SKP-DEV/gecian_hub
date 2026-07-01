@@ -1,9 +1,8 @@
 'use client';
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeftIcon, Filter } from "lucide-react";
+import { ArrowLeftIcon, Filter, Plus, Trash2, Pencil } from "lucide-react";
 import WaveDesign from "./wave/wave_design";
-import { Add, Trash, Edit } from "iconsax-react";
 
 // Define Item type
 type Item = {
@@ -52,8 +51,8 @@ export default function LostFound() {
               <p className="text-sm text-black/[0.7] mt-1">Contact: {item.contactInfo}</p>
               <div className="relative flex gap-2 mt-3">
                 <button onClick={() => {/* Report logic */}} className="text-black underline font-semibold">Report</button>
-                <button onClick={() => {/* Edit logic */}} className="absolute right-10 text-gray-600"><Edit size={25} /></button>
-                <button onClick={() => deleteItem(item.id)} className="absolute right-0 text-gray-600"><Trash size={25} /></button>
+                <button onClick={() => {/* Edit logic */}} className="absolute right-10 text-gray-600"><Pencil size={25} /></button>
+                <button onClick={() => deleteItem(item.id)} className="absolute right-0 text-gray-600"><Trash2 size={25} /></button>
               </div>
             </div>
           </div>
@@ -63,7 +62,7 @@ export default function LostFound() {
       {/* Floating Add Button */}
       <Link href="/lost/add">
         <button className="fixed bottom-6 right-7 bg-blue-200 border border-black text-black w-12 h-12 rounded-[12px] flex items-center justify-center shadow-lg hover:bg-blue-400 transition-colors">
-          <Add size={40} />
+          <Plus size={40} />
         </button>
       </Link>
     </div>

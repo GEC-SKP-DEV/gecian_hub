@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { DocumentUpload, NoteRemove } from "iconsax-react";
+import { Upload, Trash2 } from "lucide-react";
 
 function dataURLtoFile(dataurl: string, filename: string): File {
   const arr = dataurl.split(",");
@@ -109,7 +109,7 @@ const TimeTableBlock = () => {
             {/* Upload Button */}
             {!uploadedFile && (
               <label className="flex items-center border border-[var(--text)] space-x-1 px-2 py-1 text-[var(--text)] rounded-lg cursor-pointer text-sm">
-                <DocumentUpload size={18} color="black" variant="Bold" />
+                <Upload size={18} className="text-[var(--text)]" />
                 <span>Upload</span>
                 <input
                   type="file"
@@ -131,7 +131,7 @@ const TimeTableBlock = () => {
                 }}
                 className="flex items-center border border-[var(--text)] space-x-1 px-2 py-1 text-[var(--text)] rounded-lg text-sm"
               >
-                <NoteRemove size={18} color="black" variant="Bold" />
+                <Trash2 size={18} className="text-[var(--text)]" />
                 <span>Remove</span>
               </button>
             )}

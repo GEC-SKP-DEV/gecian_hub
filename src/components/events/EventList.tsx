@@ -156,7 +156,10 @@ export default function EventList() {
         {filteredEvents.map((event) => (
           <EventCard key={event.id} event={{
             ...event,
-            image: event.image || '' // Ensure image is always a string
+            date: event.date ? new Date(event.date) : null,
+            image: event.image || '',
+            createdAt: new Date(),
+            updatedAt: new Date(),
           }} />
         ))}
       </div>

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
 
 export default function TermsPage() {
-  const updatedDate = new Date().toLocaleDateString();
   const router = useRouter()
   return (
     <div className="max-w-3xl mx-auto px-6 py-10 text-black space-y-10">

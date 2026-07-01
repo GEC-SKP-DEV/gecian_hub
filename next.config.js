@@ -8,13 +8,6 @@ const withPWA = require("next-pwa")({
 });
 
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-
-    ignoreBuildErrors: true,
-  },
   // App Router is enabled by default in Next 13+, nothing special needed here.
   // You can add any other Next config as required.
 };

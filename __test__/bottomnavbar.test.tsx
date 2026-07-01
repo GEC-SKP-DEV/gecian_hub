@@ -1,14 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import BottomNavBar from "@/components/bottomNavbar";
-import { Book, Calendar2, Calendar, Home2, Money } from "iconsax-react";
+import { Book, Calendar, CalendarDays, Home, Wallet } from "lucide-react";
 
 // Mock the icons to verify they're rendered
-jest.mock("iconsax-react", () => ({
+jest.mock("lucide-react", () => ({
   Book: jest.fn(() => <div data-testid="book-icon" />),
-  Calendar2: jest.fn(() => <div data-testid="calendar-icon" />),
-  Calendar: jest.fn(() => <div data-testid="calendar-event-icon" />),
-  Home2: jest.fn(() => <div data-testid="home-icon" />),
-  Money: jest.fn(() => <div data-testid="money-icon" />),
+  Calendar: jest.fn(() => <div data-testid="calendar-icon" />),
+  CalendarDays: jest.fn(() => <div data-testid="calendar-event-icon" />),
+  Home: jest.fn(() => <div data-testid="home-icon" />),
+  Wallet: jest.fn(() => <div data-testid="money-icon" />),
 }));
 
 describe("BottomNavBar Component", () => {
@@ -44,14 +44,14 @@ describe("BottomNavBar Component", () => {
   it("renders correct icons for each nav item", () => {
     render(<BottomNavBar />);
 
-    expect(Home2).toHaveBeenCalled();
+    expect(Home).toHaveBeenCalled();
     expect(Book).toHaveBeenCalled();
-    expect(Calendar2).toHaveBeenCalled();
     expect(Calendar).toHaveBeenCalled();
-    expect(Money).toHaveBeenCalled();
+    expect(CalendarDays).toHaveBeenCalled();
+    expect(Wallet).toHaveBeenCalled();
 
     // Verify icon props
-    const homeIconProps = (Home2 as jest.Mock).mock.calls[0][0];
+    const homeIconProps = (Home as jest.Mock).mock.calls[0][0];
     expect(homeIconProps.size).toBe("32");
     expect(homeIconProps.color).toBe("var(--text)");
   });

@@ -1,8 +1,7 @@
 "use client";
 
-import { User } from "iconsax-react";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+
 import Sidebar from "./Sidebar";
 
 // function isValidSemester(semester: number) {
@@ -16,17 +15,12 @@ const Header: React.FC<{
   userPhotoURL?: string | null;
   // }> = ({ userName, semester, department, userPhotoURL }) => {
 }> = ({}) => {
-  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // const displaySemester =
   //   semester !== undefined && semester !== null && isValidSemester(semester)
   //     ? `S${semester}, `
   //     : "";
-  const handleUsrProfileClick = () => {
-    router.push("/profile");
-  };
-
   return (
     <>
       <div className="flex items-center justify-between px-4 py-7 bg-gradient-to-b from-transparent to-20% to-[var(--main)] shadow-[0_8px_20px_10px_var(--main)]">

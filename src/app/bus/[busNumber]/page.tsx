@@ -3,14 +3,16 @@
 import { notFound, useRouter } from "next/navigation";
 import { busRoutes } from "@/data/busRoutes";
 import { ArrowLeftIcon } from "lucide-react";
+import { use } from "react";
 
 export default function BusRoutePage({
   params,
 }: {
-  params: { busNumber: string };
+  params: Promise<{ busNumber: string }>;
 }) {
   const router = useRouter();
-  const bus = busRoutes.find((b) => b.slug === params.busNumber);
+  const { busNumber } = use(params);
+  const bus = busRoutes.find((b) => b.slug === busNumber);
 
   if (!bus) return notFound();
 
